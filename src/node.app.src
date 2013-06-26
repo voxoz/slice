@@ -1,0 +1,9 @@
+{application, node,
+ [
+  {description, "NODE VXZ Instance Server"},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [kernel, stdlib, sync]},
+  {mod, { node_app, []}},
+  {env, []}
+ ]}.
