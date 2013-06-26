@@ -1,0 +1,8 @@
+run_erl [12505] Wed Jun 26 17:10:25 2013
+Args before exec of shell:
+run_erl [12505] Wed Jun 26 17:10:25 2013
+argv[0] = sh
+run_erl [12505] Wed Jun 26 17:10:25 2013
+argv[1] = -c
+run_erl [12505] Wed Jun 26 17:10:25 2013
+argv[2] = exec /home/maxim/synrc/node_server/rels/instance_manager/node/bin/node console \'\' 

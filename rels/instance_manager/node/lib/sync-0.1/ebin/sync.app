@@ -1,0 +1,20 @@
+%% app generated at {2013,6,26} {16,35,34}
+{application,sync,
+             [{description,"Sync - Automatic Code Reloader"},
+              {vsn,"0.1"},
+              {id,[]},
+              {modules,[sync,sync_options,sync_scanner,sync_utils]},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {included_applications,[]},
+              {env,[{discover_modules_interval,30000},
+                    {discover_src_dirs_interval,30000},
+                    {discover_src_files_interval,5000},
+                    {compare_beams_interval,2000},
+                    {compare_src_files_interval,1000},
+                    {file_variables,"-*- mode: compilation; mode: auto-revert; buffer-read-only: true; auto-revert-interval: 0.5 -*-\n\n"},
+                    {out_file,"/tmp/sync.out"}]},
+              {maxT,infinity},
+              {maxP,infinity},
+              {mod,{sync,[]}}]}.
+

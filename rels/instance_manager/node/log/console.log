@@ -1,0 +1,83 @@
+2013-06-26 16:36:16.702 [info] <0.548.0> Application lager started on node 'node_server@127.0.0.1'
+2013-06-26 16:36:16.790 [info] <0.548.0> Application sync started on node 'node_server@127.0.0.1'
+2013-06-26 16:36:16.791 [info] <0.548.0> Application ins started on node 'node_server@127.0.0.1'
+2013-06-26 17:10:27.127 [info] <0.548.0> Application lager started on node 'node_server@127.0.0.1'
+2013-06-26 17:10:27.194 [info] <0.548.0> Application sync started on node 'node_server@127.0.0.1'
+2013-06-26 17:10:27.194 [info] <0.548.0> Application ins started on node 'node_server@127.0.0.1'
+2013-06-26 17:11:03.633 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:11:09.775 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:11:24.534 [info] <0.548.0> Application ins exited with reason: stopped
+2013-06-26 17:11:28.023 [info] <0.548.0> Application ins started on node 'node_server@127.0.0.1'
+2013-06-26 17:12:13.297 [info] <0.548.0> Application ins exited with reason: stopped
+2013-06-26 17:12:14.872 [info] <0.548.0> Application ins started on node 'node_server@127.0.0.1'
+2013-06-26 17:15:07.031 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:15: Error: function auth/2 undefined
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:31: Error: syntax error before: '}'
+
+2013-06-26 17:15:09.122 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:15: Error: function auth/2 undefined
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:31: Error: syntax error before: '}'
+
+2013-06-26 17:15:12.235 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:16:27.000 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:16:34.244 [info] <0.1541.0> docker run -d -p 22 -c=1 -h "sncn2" voxoz/precise /usr/bin/supervisord -n
+2013-06-26 17:18:17.175 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:18:28.356 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:18:30.307 [info] <0.1852.0> ["docker run -d -p 22 -c=1 -h \"sncn4\" voxoz/precise /usr/bin/supervisord -n"]
+2013-06-26 17:19:21.957 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:19:23.821 [info] <0.1852.0> docker run -d -p 22 -c=1 -h "sncn5" voxoz/precise /usr/bin/supervisord -n
+2013-06-26 17:19:23.851 [info] <0.1852.0> ["WARNING:  Docker detected local DNS server on resolv.conf. Using default external servers: [8.8.8.8 8.8.4.4]","090b69b042c5"]
+2013-06-26 17:20:32.729 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:20:35.217 [info] <0.1852.0> docker run -d -p 22 -c=1 -h "sncn6" voxoz/precise /usr/bin/supervisord -n
+2013-06-26 17:21:17.237 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:21:31.444 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:21:37.595 [info] <0.763.0> /home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Cert' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'Ram' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:19: Warning: variable 'User' is unused
+/home/maxim/synrc/node_server/apps/ins/src/node_server.erl:0: Recompiled with 1 warnings
+
+2013-06-26 17:21:45.075 [info] <0.1852.0> docker run -d -p 22 -c=1 -h "sncn7" voxoz/precise /usr/bin/supervisord -n
