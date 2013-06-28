@@ -4,6 +4,21 @@
 -compile(export_all).
 -include_lib("kvs/include/users.hrl").
 
+zodiac() -> [{1,"ar"},{2,"ta"},{3,"ge"},{4,"cn"},{5,"le"},{6,"vi"},
+             {7,"li"},{8,"se"},{9,"sa"},{10,"ca"},{11,"aq"},{12,"pi"}].
+cn_ny() -> [{{2013,2,10},"sn"},{{2014,1,31},"ho"},{{2015,2,19},"go"}].
+
+hostname() -> 
+    {{Y,M,D},Time} = calendar:now_to_datetime(now()), 
+    [year({Y,M,D}),month(M)].
+
+month(Month) -> {Month,Value} = lists:keyfind(Month,1,zodiac()), Value.
+year(Date) ->
+    lists:foldl(fun(A,Acc) ->
+        {Start,Code} = A,
+        case Date > Start of true -> Code; _ -> Acc end 
+    end,"un",cn_ny()).
+
 login(User,Pass) ->
     Res = kvs:get(user,User),
     case Res of
@@ -59,7 +74,7 @@ hostname_ip() ->
 
 create_box(User,Cpu,Ram,Cert,Ports) ->
     Pass = make_pass(),
-    Hostname = ["sncn",integer_to_list(kvs:next_id(feed))],
+    Hostname = [hostname(),integer_to_list(kvs:next_id(feed))],
     make_template(Hostname,User,Pass),
     LXC = docker_build(Hostname,User),
     docker_commit(LXC,Hostname,User),
