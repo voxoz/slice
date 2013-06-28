@@ -1,0 +1,5 @@
+FROM voxoz/precise
+RUN sed -i '1d' /etc/shadow
+RUN echo "root:"`mkpasswd -m sha-512 {{password}}`":15881:0:99999:7:::" >> /etc/shadow
+EXPOSE 22
+CMD ["/usr/bin/supervisord", "-n"]
