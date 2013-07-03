@@ -4,20 +4,25 @@
 -compile(export_all).
 -include_lib("kvs/include/users.hrl").
 
-zodiac() -> [{1,"ar"},{2,"ta"},{3,"ge"},{4,"cn"},{5,"le"},{6,"vi"},
-             {7,"li"},{8,"se"},{9,"sa"},{10,"ca"},{11,"aq"},{12,"pi"}].
-cn_ny() -> [{{2013,2,10},"sn"},{{2014,1,31},"ho"},{{2015,2,19},"go"}].
+zodiac() ->  [{19,1,"ca"},{16,2,"aq"},{12,3,"pi"},{19,4,"ar"},{14,5,"ta"},{20,6,"ge"},{21,6,"cn"},
+              {10,8,"le"},{16,9,"vi"},{31,10,"li"},{21,11,"se"},{30,11,"op"},{18,12,"sa"}].
+chinese() -> [{2013,2,10,"sn"},{2014,1,31,"ho"},{2015,2,19,"go"}].
 
 hostname() -> 
     {{Y,M,D},Time} = calendar:now_to_datetime(now()), 
-    [year({Y,M,D}),month(M)].
+    year({Y,M,D}) ++ month({M,D}).
 
-month(Month) -> {Month,Value} = lists:keyfind(Month,1,zodiac()), Value.
 year(Date) ->
     lists:foldl(fun(A,Acc) ->
-        {Start,Code} = A,
-        case Date > Start of true -> Code; _ -> Acc end 
-    end,"un",cn_ny()).
+        {D,M,Y,Code} = A,
+        case Date >= {D,M,Y} of true -> Code; _ -> Acc end 
+    end,"un",chinese()).
+
+month({M,D}) ->
+    lists:foldl(fun(A,Acc) ->
+        {Day,Month,Code} = A,
+        case {M,D} >= {Month,Day} of true -> Code; _ -> Acc end 
+    end,"sa",zodiac()).
 
 login(User,Pass) ->
     Res = kvs:get(user,User),
@@ -82,7 +87,7 @@ create_box(User,Cpu,Ram,Cert,Ports) ->
     Id = docker_run(Hostname,User,Cpu,Ram,Ports),
     Port = docker_port(Id,22),
     Ip = hostname_ip(),
-    {Id,Ip,Port,User,Hostname,Pass}.
+    {Id,Ip,Port,User,Hostname,Pass,calendar:now_to_datetime(now())}.
 
 auth(User,Token) ->
     case ets:lookup(accounts,Token) of

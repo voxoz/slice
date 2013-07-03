@@ -1,6 +1,6 @@
 {application, ins,
  [
-  {description, "NODE VXZ Instance Server"},
+  {description, "INS VXZ Instance Manager"},
   {vsn, "1"},
   {registered, []},
   {applications, [kernel, stdlib, sync]},
