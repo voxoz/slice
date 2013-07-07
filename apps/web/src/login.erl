@@ -29,8 +29,8 @@ body() ->
           #h3{class=["text-center"], body= <<"Sign in with">>},
           #panel{class=["btn-toolbar", "text-center"], body=[
 %            login_btn(twitter),
-%            login_btn(facebook),
-%            login_btn(google) 
+            login_btn(facebook),
+            login_btn(google) 
             ]},
           #h3{class=["text-center"], body= <<"or">>},#br{},
           #panel{class=["control-group"], body=[
@@ -66,8 +66,8 @@ body() ->
     ]},
     #panel{class=["pull-center"], body=[<<"Not a member?">>, #link{body= <<" Sign Up">>} ]} ]} ]} ]} ] 
     ++ index:footer() ++ [
-%      facebook_sdk(),
-%      gplus_sdk()
+      facebook_sdk(),
+      gplus_sdk()
     ].
 
 
