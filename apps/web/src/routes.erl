@@ -14,11 +14,11 @@ init(State, Ctx) ->
 route(<<"/">>) -> {containers, []};
 route(<<"/login">>) -> {login, []};
 route(<<"/account">>) -> {account, []};
-route(<<"/dashboard">>) -> {dashboard, []};
+route(<<"/releases">>) -> {releases, []};
 route(<<"/containers">>) -> {containers, []};
 route(<<"/ws/">>) -> {login, []};
 route(<<"/ws/login">>) -> {login, []};
-route(<<"/ws/dashboard">>) -> {dashboard, []};
+route(<<"/ws/releases">>) -> {releases, []};
 route(<<"/ws/account">>) -> {account, []};
 route(<<"/ws/containers">>) -> {containers, []};
 route(<<"/favicon.ico">>) -> {static_file, []};
