@@ -11,7 +11,7 @@ header(Inverse) -> [
         #link{class=[btn, "btn-navbar"], data_fields=[{<<"data-toggle">>, <<"collapse">>}, {<<"data-target">>, <<".nav-collapse">>}], url="javascript:void(0)",
           body=[#span{class=["icon-bar"]}||_I<-lists:seq(1,3)]},
 
-        #h1{class=[brand], body=#link{url="/login", body= <<"Erlang Cloud">>, name="top" }},
+        #h1{class=[brand], body=#link{url="http://voxoz.com", body= <<"Erlang Cloud">>, name="top" }},
         #panel{class=["nav-collapse", "collapse"], body=[
           #list{class=[nav, "pull-right"], body=[
             #li{body=#link{body= <<"Home">>,url="http://voxoz.com/"}},

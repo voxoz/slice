@@ -11,7 +11,7 @@ init(State, Ctx) ->
     {Module, PathInfo} = route(Path),
     {ok, State, Ctx#context{path=PathInfo,module=Module}}.
 
-route(<<"/">>) -> {login, []};
+route(<<"/">>) -> {containers, []};
 route(<<"/login">>) -> {login, []};
 route(<<"/account">>) -> {account, []};
 route(<<"/dashboard">>) -> {dashboard, []};
