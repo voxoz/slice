@@ -36,7 +36,8 @@ header(Inverse) -> [
                   undefined -> #li{body=#link{id=loginbtn, postback=to_login, delegate=login, body=[#i{class=["icon-off"]}, <<" Login">> ]}};
                   _A -> #li{body=#link{id=logoutbtn, postback=logout, delegate=login, body=[#i{class=["icon-off"]}, <<" Logout">> ] }} end ]} ]} ]} ]} ]} ]} ]} ].
 
-footer()-> [
+footer() -> [].
+footer_main()-> [
   #footer{id=mainfooter, class=[section, "sky-footer"], body=
     #panel{class=["row-fluid"], body=[
           #panel{class=[span5, "footer-banner"], body=[
