@@ -4,7 +4,7 @@
 -include_lib("kvs/include/users.hrl").
 
 -define(HTTP_ADDRESS, case application:get_env(web, http_address) of {ok, A} -> A; _ -> "http://localhost:8000" end).
--define(FB_APP_ID, case application:get_env(web, fb_id) of {ok, Id} -> Id; _-> "176025532423202" end).
+-define(FB_APP_ID, case application:get_env(web, fb_id) of {ok, Id} -> Id; _-> "118554188236439" end).
 -define(GPLUS_CLIENT_ID, case application:get_env(web, gplus_client_id) of {ok, Id} -> Id; _-> "146782506820.apps.googleusercontent.com" end).
 -define(GPLUS_COOKIE_POLICY, case application:get_env(web, gplus_cookiepolicy) of {ok, P} -> P; _-> "single_host_origin" end).
 
