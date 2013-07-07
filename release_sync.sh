@@ -3,6 +3,7 @@
 wd=`pwd`
 appss=( "rels/instance_manager/node/lib/ins-1"
         "rels/instance_manager/node/lib/kvs-1"
+        "rels/instance_manager/node/lib/web-1"
         "rels/instance_manager/node/lib/mqs-0.0.1")
 
 declare -A sources_apps
