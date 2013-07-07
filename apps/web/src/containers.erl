@@ -3,9 +3,8 @@
 -include_lib("n2o/include/wf.hrl").
 -include_lib("kvs/include/users.hrl").
 
-main() -> %case wf:user() of undefined -> wf:redirect("/login"); _ -> 
-   [#dtl{file = "prod", bindings=[{title,<<"Containers">>},{body,body()}]}].
-% end.
+main() -> case wf:user() of undefined -> wf:redirect("/login"); _ -> 
+   [#dtl{file = "prod", bindings=[{title,<<"Containers">>},{body,body()}]}] end.
 
 body() -> index:header() ++ [
   #section{id=content, body=
