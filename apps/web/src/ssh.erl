@@ -1,4 +1,4 @@
--module(containers).
+-module(ssh).
 -compile(export_all).
 -include_lib("n2o/include/wf.hrl").
 -include_lib("kvs/include/users.hrl").
