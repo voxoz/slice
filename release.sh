@@ -10,6 +10,7 @@ function release_node {
     cd rels/$1
     rebar -f generate
     cd ../..
+    ./nitrogen_static.sh
     ./release_sync.sh
 }
 
