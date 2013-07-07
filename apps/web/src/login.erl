@@ -32,9 +32,9 @@ body() ->
 %            login_btn(facebook),
 %            login_btn(google) 
             ]},
-          #h3{class=["text-center"], body= <<"or">>},
+          #h3{class=["text-center"], body= <<"or">>},#br{},
           #panel{class=["control-group"], body=[
-            #label{class=["control-label"], for=user, body= <<"Username">>},
+            #label{class=["control-label"], for=user, body= <<"Mail">>},
             #panel{class=[controls], body=[
               #panel{class=["input-prepend"], body=[
                 #span{class=["add-on"], body=#i{class=["icon-user"]}},
@@ -73,10 +73,13 @@ body() ->
 
 event(init) -> [];
 event(logout) -> wf:user(undefined), wf:redirect("/login");
-event(login) -> User = wf:q(user), wf:user(User), 
+event(login) -> %User = wf:q(user), wf:user(User), 
     error_logger:info_msg("Login Pressed"),
     wf:redirect("/account");
-event(to_login) -> wf:redirect("/login").
+event(to_login) -> wf:redirect("/login");
+event(Ev) -> 
+    error_logger:info_msg("Event ~p",[Ev]),
+    ok.
 
 api_event(plusLogin, Args, _)-> login(googleplus_id, Args);
 api_event(fbLogin, Args, _Term)-> login(facebook_id, Args);
