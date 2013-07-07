@@ -10,7 +10,7 @@ body() -> index:header() ++ [
   #section{id=content, body=
     #panel{class=[container], body=
       #panel{class=[row, dashboard], body=[
-        #panel{class=[span3], body=dashboard:sidebar_menu(containers)},
+        #panel{class=[span3], body=dashboard:sidebar_menu(?MODULE)},
         #panel{class=[span9], body=dashboard:section(key(wf:user()), "icon-list")}]}}}
   ] ++ index:footer().
 
