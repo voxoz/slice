@@ -90,6 +90,7 @@ login(Key, Args)->
     [{error, E}|_Rest] -> error_logger:info_msg("oauth error: ~p", [E]);
     _ ->
       CurrentUserEmail = case wf:user() of #user{email=EE} -> EE; _ -> undefined end,
+	error_logger:info_msg("Args: ~p, Key: ~p",[Args,Key]),
       {Id, RegData} = registration_data(Args, Key),
       case kvs:all_by_index(user, Key, Id) of
         [] ->  case kvs_user:register(RegData) of
@@ -181,6 +182,7 @@ registration_data(Props, twitter_id)->
     display_name = proplists:get_value(<<"screen_name">>, Props),
     avatar = proplists:get_value(<<"profile_image_url">>, Props),
     name = proplists:get_value(<<"name">>, Props),
+    email = binary_to_list(UserName) ++ "@twitter.com",
     surname = [],
     twitter_id = Id,
     team = kvs_meeting:create_team("tours"),

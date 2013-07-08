@@ -1,4 +1,4 @@
--name instance_server_local@127.0.0.1
+-name instance_server@127.0.0.1
 -setcookie node_runner
 +K true
 +A 5
