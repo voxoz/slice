@@ -134,26 +134,33 @@
       & span { }
     }
   }
-  /* Create LXC */
+  /* Create LXC\Release */
   .create-container{
     max-width:507px;
     @media(max-width:768px){max-width:330px; margin:0 auto;}
-
     & .control-group{
-      margin-bottom: 46px;
-
-      &:first-child{
-        margin-bottom: 66px;
-        & .control-label{line-height:50px;}
+      &.tall{margin-bottom: 46px;}
+      &.large {
+        & .control-label{line-height:50px;padding-top:0px;margin-bottom:0;}
         & .controls {
-          & input[type="text"] {
+          & input[type="text"]{
             font-size: 20pt;
+            height: 50px;
+            border-radius: 0;
+          }
+          & select {
+            max-width:220px;
+            font-size: 20px;
             height: 50px;
             border-radius: 0;
           }
         }
       }
-      & .controls { 
+
+      &:first-child{
+        margin-bottom: 66px;
+      }
+      & .controls {
         margin-left: 110px;
         @media(max-width: 480px){
           margin:0 auto;
@@ -167,8 +174,9 @@
         width:auto;
         @media(max-width:480px){text-align:center;}
       }
-      & .btn-toolbar {@media(max-width:480px){text-align:center;}}
       & .slider{@media(max-width:480px){margin-top:60px;} }
     }
+
+    & .btn-toolbar {@media(max-width:480px){text-align:center;}}
   }
 }

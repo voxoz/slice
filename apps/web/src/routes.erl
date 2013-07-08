@@ -17,6 +17,7 @@ route(<<"/account">>) -> {account, []};
 route(<<"/releases">>) -> {releases, []};
 route(<<"/containers">>) -> {containers, []};
 route(<<"/newlxc">>) -> {newlxc, []};
+route(<<"/new_release">>) -> {new_release, []};
 route(<<"/ssh">>) -> {ssh, []};
 route(<<"/ws/">>) -> {login, []};
 route(<<"/ws/login">>) -> {login, []};
@@ -24,6 +25,7 @@ route(<<"/ws/releases">>) -> {releases, []};
 route(<<"/ws/account">>) -> {account, []};
 route(<<"/ws/containers">>) -> {containers, []};
 route(<<"/ws/newlxc">>) -> {newlxc, []};
+route(<<"/ws/new_release">>) -> {new_release, []};
 route(<<"/ws/ssh">>) -> {ssh, []};
 route(<<"/favicon.ico">>) -> {static_file, []};
 route(_) -> {index, []}.

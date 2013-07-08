@@ -18,22 +18,21 @@ body() -> index:header() ++ [
 create_lxc(User) -> [
   #h3{body= <<"create container">>},
   #panel{class=["form-horizontal", "create-container"], body=[
-    #panel{class=["control-group", name], body=[
+    #panel{class=["control-group", large, tall], body=[
       #label{class=["control-label"], body= <<"Name:">>, for=release},
       #panel{class=[controls], body=[
         #textbox{id=release, value= <<"snsc3">>}
       ]}
     ]},
-    #panel{class=["control-group"], body=[
+    #panel{class=["control-group", tall], body=[
       #label{class=["control-label"], body= <<"CPU:">>, for=cpu},
       #panel{class=[controls], body=#slider{id=cpu, formater = <<"function(value){return 'CPU: '+value;}">>}}
     ]},
-    #panel{class=["control-group"], body=[
+    #panel{class=["control-group", tall], body=[
       #label{class=["control-label"], body= <<"RAM:">>, for=ram},
       #panel{class=[controls], body=#slider{id=ram, formater= <<"function(value){return 'RAM: '+value;}">>}}
-    ]}
-  ]},
-  #panel{class=["btn-toolbar"], body=[#link{id=createlxc, class=[btn, "btn-large", "btn-success"], body= <<"Approve">>, postback=create_lxc}]} ].
+    ]},
+    #panel{class=["btn-toolbar"], body=[#link{id=createlxc, class=[btn, "btn-large", "btn-success"], body= <<"Approve">>, postback=create_lxc}]} ]} ].
 
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).
 event(init) -> [];

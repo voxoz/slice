@@ -15,4 +15,5 @@ section(Body, Icon) ->
     #panel{class=[span11, "dashboard-unit"], body=Body}
   ]}.
 
-event(create_lxc) -> wf:redirect("/newlxc").
+event(create_lxc) -> wf:redirect("/newlxc");
+event(create_release) -> wf:redirect("/new_release").
