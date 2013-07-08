@@ -24,7 +24,7 @@ init([]) ->
 
     kvs:put(#instance{name='instance_server@do2.synrc.com',region="do",status=active}),
 
-    ets:new(boxes,[named_table,public]),
+    ets:new(boxes,[named_table,public,{keypos,2}]),
 
     AllBoxes = [begin
         net_adm:ping(Node),
