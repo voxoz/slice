@@ -85,38 +85,14 @@ api_event(plusLogin, Args, _)-> login(googleplus_id, Args);
 api_event(fbLogin, Args, _Term)-> login(facebook_id, Args);
 api_event(Name,Tag,_Term) -> error_logger:info_msg("Login Name ~p~n, Tag ~p~n",[Name,Tag]).
 
-login(Key, Args)->
-  case Args of
-    [{error, E}|_Rest] -> error_logger:info_msg("oauth error: ~p", [E]);
-    _ ->
-      CurrentUserEmail = case wf:user() of #user{email=EE} -> EE; _ -> undefined end,
-	error_logger:info_msg("Args: ~p, Key: ~p",[Args,Key]),
-      {Id, RegData} = registration_data(Args, Key),
-      case kvs:all_by_index(user, Key, Id) of
-        [] ->  case kvs_user:register(RegData) of
-            {ok, Email} -> login_user(Email);
-            {error, E} -> error_logger:info_msg("error: ~p", [E])
-          end;
-        [#user{email=Email}|_] when Email == CurrentUserEmail -> ok;
-        [#user{email=Email}|_] -> login_user(Email)
-      end
-  end.
-
-login_user(Email) ->
-  case kvs:get(user, Email) of
-    {ok, User}->
-      %nsx_msg:notify(["login", "user", UserName, "update_after_login"], []),
-      Update = case kvs:get(user_status, Email) of
-        {error, not_found} ->
-          #user_status{username = Email, last_login = erlang:now()};
-        {ok, UserStatus} -> UserStatus#user_status{last_login = erlang:now()}
-        end,
-      kvs:put(Update),
-      wf:user(User),
-      wf:redirect("/account");
-    {error, not_found}-> 
-      error_logger:info_msg("~p NOT FOUND", [Email])
-  end.
+login_user(User) -> wf:user(User), wf:redirect("/account").
+login(Key, Args)-> case Args of [{error, E}|_Rest] -> error_logger:info_msg("oauth error: ~p", [E]);
+    _ -> case kvs:get(user,email_prop(Args,Key)) of
+              {ok,Existed} -> login_user(Existed);
+              {error,_} -> {Id, RegData} = registration_data(Args, Key, #user{}),
+                  case kvs_user:register(RegData) of
+                      {ok, Registered} -> login_user(Registered);
+                      {error, E} -> error_logger:info_msg("error: ~p", [E]) end end end.
 
 twitter_callback()->
   Token = wf:q(<<"oauth_token">>),
@@ -135,18 +111,18 @@ twitter_callback()->
     _ -> skip
   end.
 
-registration_data(Props, facebook_id)->
+registration_data(Props, facebook_id, Ori)->
   Id = proplists:get_value(id, Props),
   UserName = proplists:get_value(username, Props),
   BirthDay = case proplists:get_value(birthday, Props) of
     undefined -> {1, 1, 1970};
     BD -> list_to_tuple([list_to_integer(X) || X <- string:tokens(BD, "/")])
   end,
-  {proplists:get_value(id, Props), #user{
+  {proplists:get_value(id, Props), Ori#user{
     username = re:replace(UserName, "\\.", "_", [{return, list}]),
     display_name = UserName,
     avatar = "https://graph.facebook.com/" ++ UserName ++ "/picture",
-    email = proplists:get_value(email, Props),
+    email = email_prop(Props, facebook_id),
     name = proplists:get_value(first_name, Props),
     surname = proplists:get_value(last_name, Props),
     facebook_id = Id,
@@ -155,17 +131,17 @@ registration_data(Props, facebook_id)->
     register_date = erlang:now(),
     status = ok
   }};
-registration_data(Props, googleplus_id)->
+registration_data(Props, googleplus_id, Ori)->
   Id = proplists:get_value(id, Props),
   Name = proplists:get_value(name, Props),
   GivenName = proplists:get_value(givenName, Name),
   FamilyName = proplists:get_value(familyName, Name),
   Image = proplists:get_value(image, Props),
-  {Id, #user{
+  {Id, Ori#user{
     username = string:to_lower(GivenName ++ "_" ++ FamilyName),
     display_name = proplists:get_value(displayName, Props),
     avatar = lists:nth(1,string:tokens(proplists:get_value(url, Image), "?")),
-    email = proplists:get_value(email, Props),
+    email = email_prop(Props,googleplus_id),
     name = GivenName,
     surname = FamilyName,
     googleplus_id = Id,
@@ -174,21 +150,25 @@ registration_data(Props, googleplus_id)->
     sex = proplists:get_value(gender, Props),
     status = ok
   }};
-registration_data(Props, twitter_id)->
+registration_data(Props, twitter_id, Ori)->
   Id = proplists:get_value(<<"id_str">>, Props),
   UserName = proplists:get_value(<<"screen_name">>, Props),
-  {Id, #user{
+  {Id, Ori#user{
     username = re:replace(UserName, "\\.", "_", [{return, list}]),
     display_name = proplists:get_value(<<"screen_name">>, Props),
     avatar = proplists:get_value(<<"profile_image_url">>, Props),
     name = proplists:get_value(<<"name">>, Props),
-    email = binary_to_list(UserName) ++ "@twitter.com",
+    email = email_prop(Props,twitter_id),
     surname = [],
     twitter_id = Id,
     team = kvs_meeting:create_team("tours"),
     register_date = erlang:now(),
     status = ok
   }}.
+
+email_prop(Props, twitter_id) -> binary_to_list(proplists:get_value(<<"screen_name">>, Props)) ++ "@twitter.com";
+email_prop(Props, _) -> proplists:get_value(email, Props).
+
 
 login_btn(google)-> #panel{id=plusloginbtn, class=["btn-group"], body=
   #link{class=[btn, "btn-google-plus", "btn-large"], body=[#i{class=["icon-google-plus", "icon-large"]}, <<"Google">>] }};

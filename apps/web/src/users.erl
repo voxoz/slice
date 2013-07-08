@@ -1,21 +1,21 @@
 -module(users).
 -compile(export_all).
+-include_lib("kvs/include/users.hrl").
 -include_lib("ins/include/node_server.hrl").
--include("users.hrl").
 
 % This is REST callbacks module for bucket USERS
 
--define(USERS, [#user{id="maxim",email="maxim@synrc.com"},
-                #user{id="doxtop",email="doxtop@synrc.com"},
-                #user{id="roman",email="roman@github.com"}]).
+-define(USERS, [#user{username="maxim",email="maxim@synrc.com"},
+                #user{username="doxtop",email="doxtop@synrc.com"},
+                #user{username="roman",email="roman@github.com"}]).
 
-init() -> ets:new(users, [named_table,{keypos,#user.id}]), ets:insert(users, ?USERS).
+init() -> ets:new(users, [named_table,{keypos,#user.email}]), ets:insert(users, ?USERS).
 get([]) -> ets:foldl(fun(C,Acc) -> [C|Acc] end,[],users);
 get(Id) -> ets:lookup(users,Id).
 delete(Id) -> ets:delete(users,Id).
 put(User=#user{}) -> ets:insert(users,User).
 exists(Id) -> ets:member(users,Id).
-to_html(User=#user{}) -> [<<"<tr><td>">>,coalesce(User#user.id),<<"</td><td>">>,
+to_html(User=#user{}) -> [<<"<tr><td>">>,coalesce(User#user.username),<<"</td><td>">>,
                                          coalesce(User#user.email),<<"</td><td>">>,
                                          coalesce(User#user.name),<<"</td></tr">>].
 

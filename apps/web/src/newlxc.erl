@@ -38,7 +38,7 @@ api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Te
 event(init) -> [];
 event(create_lxc) ->
     Node = node_server:decide(),
-    Res = rpc:call(Node#instance.name,node_server,create_box,[wf:user(),10,64,0,[22,80]]),
+    Res = rpc:call(Node#instance.name,node_server,create_box,[(wf:user())#user.email,10,64,0,[22,80]]),
     error_logger:info_msg("Box: ~p",[Res]),
 %    {Id,Ip,Port,User,Hostname,Pass,{Date,Time}} = Res,
 %    Box = #box{id=Id,host=Hostname,pass=Pass,user=User,ssh=Port,datetime={Date,Time},ports=[22,80]},
