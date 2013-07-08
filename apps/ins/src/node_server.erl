@@ -42,7 +42,10 @@ create(User,Token,Cpu,Ram,Cert,Ports) ->
 make_pass() ->
     Res = os:cmd("makepasswd --char=12"),
     [Pass] = string:tokens(Res,"\n"),
-    Pass.
+    Pass,
+    Res2 = os:cmd(["mkpasswd -m sha-512 ",Pass]),
+    [Code] = string:tokens(Res2,"\n"),
+    {Pass,Code}.
 
 make_template(Hostname,User,Pass) ->
     erlydtl:compile(code:priv_dir(ins) ++ "/" ++ "Dockerfile.template",docker_template),
@@ -79,9 +82,9 @@ hostname_ip() ->
     hd(IP).
 
 create_box(User,Cpu,Ram,Cert,Ports) ->
-    Pass = make_pass(),
+    {Pass,Code} = make_pass(),
     Hostname = [hostname(),integer_to_list(kvs:next_id(feed))],
-    make_template(Hostname,User,Pass),
+    make_template(Hostname,User,Code),
     LXC = docker_build(Hostname,User),
     docker_commit(LXC,Hostname,User),
 %    docker_push(Hostname,User),
