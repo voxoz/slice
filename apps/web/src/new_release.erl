@@ -26,15 +26,15 @@ create_lxc(User) -> [
     ]},
     #panel{class=["control-group", large], body=[
       #label{class=["control-label"], body= <<"LXC:">>, for=lxc},
-      #panel{class=[controls], body=#select{id=lxc,body=[
+      #panel{class=[controls], body=#select{id=lxc, class=[selectpicker], data_fields=[], body=[
           #option{body= <<"skyline.synrc.com">>},
           #option{body= <<"gn1.synrc.com">>}
         ]} } ]},
     #panel{class=["control-group", large], body=[
       #label{class=["control-label"], body= <<"Application Bone: ">>, for=app_bone},
-      #panel{class=[controls, long], body=#select{id=app_bone, body=[
+      #panel{class=[controls, long], body=#select{id=app_bone, class=[selectpicker], body=[
         #option{body= <<"Fury Blog">>},
-        #option{body= <<"Skyline App Store">>},
+        #option{body= <<"Skyline App Store">>, label= <<"App Store">>},
         #option{body= <<"Social Esprit">>},
         #option{body= <<"None">>}
       ]}}
