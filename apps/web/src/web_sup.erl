@@ -3,6 +3,7 @@
 -export([start_link/0, init/1]).
 -compile(export_all).
 -include_lib ("n2o/include/wf.hrl").
+-include_lib ("ins/include/node_server.hrl").
 -include("users.hrl").
 -define(APP, web).
 
@@ -18,8 +19,19 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, _} = cowboy:start_http(http, 100, [{port, 8012}],
+    {ok, _} = cowboy:start_http(http, 100, [{port, wf:config(port)}],
                                            [{env, [{dispatch, dispatch_rules()}]}]),
+
+    kvs:put(#instance{name='instance_server@do2.synrc.com',region="do",status=active}),
+
+    ets:new(boxes,[named_table,public,{keypos,2}]),
+
+    AllBoxes = [begin
+        net_adm:ping(Node),
+        Boxes = rpc:call(Node,kvs,all,[box]),
+        [ ets:insert(boxes,Box) || Box <- Boxes ],
+        Boxes
+    end || #instance{name=Node} <- kvs:all(instance) ],
 
     users:init(),
 

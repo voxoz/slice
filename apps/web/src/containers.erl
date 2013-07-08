@@ -16,7 +16,8 @@ body() -> index:header() ++ [
   ] ++ index:footer().
 
 containers(User) ->
-  Boxes = kvs:all(box),
+  Boxes = [ B || B <- ets:foldl(fun(C,A) -> [C|A] end,[],boxes), B#box.user == wf:user() ],
+%  Boxes = [ B || B <- rpc:call((node_server:decide())#instance.name,kvs,all,[box]), B#box.user == wf:user() ],
   [
   #h3{body= <<"your linux boxes">>},
   case Boxes of

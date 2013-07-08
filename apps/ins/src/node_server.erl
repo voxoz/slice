@@ -3,6 +3,7 @@
 -copyright('Synrc Research Center').
 -compile(export_all).
 -include_lib("kvs/include/users.hrl").
+-include_lib("ins/include/node_server.hrl").
 
 zodiac() ->  [{19,1,"ca"},{16,2,"aq"},{12,3,"pi"},{19,4,"ar"},{14,5,"ta"},{20,6,"ge"},{21,6,"cn"},
               {10,8,"le"},{16,9,"vi"},{31,10,"li"},{21,11,"se"},{30,11,"op"},{18,12,"sa"}].
@@ -41,7 +42,10 @@ create(User,Token,Cpu,Ram,Cert,Ports) ->
 make_pass() ->
     Res = os:cmd("makepasswd --char=12"),
     [Pass] = string:tokens(Res,"\n"),
-    Pass.
+    Pass,
+    Res2 = os:cmd(["mkpasswd -m sha-512 ",Pass]),
+    [Code] = string:tokens(Res2,"\n"),
+    {Pass,Code}.
 
 make_template(Hostname,User,Pass) ->
     erlydtl:compile(code:priv_dir(ins) ++ "/" ++ "Dockerfile.template",docker_template),
@@ -78,18 +82,28 @@ hostname_ip() ->
     hd(IP).
 
 create_box(User,Cpu,Ram,Cert,Ports) ->
-    Pass = make_pass(),
+    {Pass,Code} = make_pass(),
     Hostname = [hostname(),integer_to_list(kvs:next_id(feed))],
-    make_template(Hostname,User,Pass),
+    make_template(Hostname,User,Code),
     LXC = docker_build(Hostname,User),
     docker_commit(LXC,Hostname,User),
 %    docker_push(Hostname,User),
     Id = docker_run(Hostname,User,Cpu,Ram,Ports),
     Port = docker_port(Id,22),
     Ip = hostname_ip(),
-    {Id,Ip,Port,User,Hostname,Pass,calendar:now_to_datetime(now())}.
+%    {Id,Ip,Port,User,Hostname,Pass,{Date,Time}} = Res,
+    Box = #box{id=Id,host=Hostname,region=Ip,pass=Pass,user=User,ssh=Port,datetime=calendar:now_to_datetime(now()),ports=[22,80]},
+    kvs:put(Box),
+    Box.
+%    Res = {Id,Ip,Port,User,Hostname,Pass,calendar:now_to_datetime(now())},
+%    .
 
 auth(User,Token) ->
     case ets:lookup(accounts,Token) of
          [{_,User}] -> ok;
          _ -> error end.
+
+decide() ->
+    Instances = kvs:all(instance),
+    [First|Rest] = Instances,
+    First.
