@@ -1,0 +1,35 @@
+// Slider
+.slider{
+  &.slider-horizontal{
+    & .slider-track{
+      .border-radius(4px);
+      height: 10px;
+      margin-top:-5px;
+    }
+  }
+
+  .slider-selection{
+    .box-shadow(none);
+    .border-radius(4px);
+  }
+
+  .slider-handle{ width: 20px;  height: 20px;}
+
+  & .tooltip{
+    padding: 10px;
+    font-size: 20px;
+
+    &.top{ margin-top:-10px; }
+    &.right {  margin-left: 3px;}
+    &.bottom {  margin-top: 3px;}
+    &.left {  margin-left: -3px;}
+    & .tooltip-arrow{ display:none;}
+
+    .tooltip-inner {
+      padding: 10px;
+      cursor: default;
+      background-color: #0e90d2;
+      .border-radius(4px);
+    }
+  }
+}

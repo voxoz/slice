@@ -5,7 +5,7 @@
 -include_lib("kvs/include/users.hrl").
 
 main() -> case wf:user() of undefined -> wf:redirect("/login"); _ -> 
-   [#dtl{file = "prod", bindings=[{title,<<"Create container">>},{body,body()}]}] end.
+   [#dtl{file = "dev", bindings=[{title,<<"Create container">>},{body,body()}]}] end.
 
 body() -> index:header() ++ [
   #section{id=content, body=
@@ -26,30 +26,11 @@ create_lxc(User) -> [
     ]},
     #panel{class=["control-group"], body=[
       #label{class=["control-label"], body= <<"CPU:">>, for=cpu},
-      #panel{class=[controls], body=[
-        #textbox{data_fields=[
-          {<<"data-spy">>, <<"slider">>},
-          {<<"data-slider-id">>, <<"cpu">>},
-%          {<<"data-slider-min">>, <<"-20">>},
-%          {<<"data-slider-max">>, <<"20">>},
-%          {<<"data-slider-step">>, <<"1">>},
-          {<<"data-slider-value">>, <<"5">>}%,
-%          {<<"data-slider-orientation">>, <<"horizontal">>},
-%          {<<"data-slider-selection">>, <<"after">>},
-%          {<<"data-slider-tooltip">>, <<"show">>},
-%          {<<"data-slider-handle">>, <<"round">>}
-        ]}
-      ]}
+      #panel{class=[controls], body=#slider{id=cpu, formater = <<"function(value){return 'CPU: '+value;}">>}}
     ]},
     #panel{class=["control-group"], body=[
       #label{class=["control-label"], body= <<"RAM:">>, for=ram},
-      #panel{class=[controls], body=[
-        #textbox{data_fields=[
-          {<<"data-spy">>, <<"slider">>},
-          {<<"data-slider-id">>, <<"ram">>},
-          {<<"data-slider-value">>, <<"5">>}
-        ]}
-      ]}
+      #panel{class=[controls], body=#slider{id=ram, formater= <<"function(value){return 'RAM: '+value;}">>}}
     ]}
   ]},
   #panel{class=["btn-toolbar"], body=[#link{id=createlxc, class=[btn, "btn-large", "btn-success"], body= <<"Approve">>, postback=create_lxc}]} ].

@@ -30,7 +30,7 @@ containers(User) ->
         #th{body= <<"SSH">>},
         #th{body= <<"action">>}]} ],
       rows=[ box(Box) || Box <- Boxes ]} end,
-  #panel{class=["btn-toolbar"], body=[#button{id=create, class=[btn, "btn-large", "btn-success"], body= <<"Create LXC">>, postback=create}]} ].
+  #panel{class=["btn-toolbar"], body=[#button{id=create, class=[btn, "btn-large", "btn-success"], body= <<"Create LXC">>, postback=create_lxc, delegate=dashboard}]} ].
 
 box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,ssh=Port}) ->
     #tr{class=[success], cells=[
@@ -43,8 +43,6 @@ box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,ssh=Port}) ->
 
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).
 event(init) -> [];
-event(create) ->
-   wf:redirect("/newlxc");
 event(_) -> [].
 
 coalesce(X) -> case X of undefined -> []; Z -> Z end.

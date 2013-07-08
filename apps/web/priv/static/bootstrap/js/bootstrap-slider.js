@@ -122,8 +122,7 @@
 
 		this.offset = this.picker.offset();
 		this.size = this.picker[0][this.sizePos];
-
-		this.formater = options.formater;
+		this.formater = eval('['+this.element.data('slider-formater')+']')[0] || options.formatter;
 
 		this.layout();
 
