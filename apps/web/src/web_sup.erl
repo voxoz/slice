@@ -27,6 +27,8 @@ init([]) ->
 
     users:init(),
 
+%    node_server:init_db(),
+
     users:join(),
 
     Pid = spawn(fun () -> wf:reg(lobby), chat_room([]) end),
