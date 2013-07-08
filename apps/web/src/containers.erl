@@ -16,7 +16,7 @@ body() -> index:header() ++ [
   ] ++ index:footer().
 
 containers(User) ->
-  Boxes = kvs:all(box),
+  Boxes = ets:foldl(fun(C,A) -> [C|A] end,[],boxes),
   [
   #h3{body= <<"your linux boxes">>},
   case Boxes of
