@@ -1,6 +1,7 @@
 -module(newlxc).
 -compile(export_all).
 -include_lib("n2o/include/wf.hrl").
+-include_lib("ins/include/node_server.hrl").
 -include_lib("kvs/include/users.hrl").
 
 main() -> case wf:user() of undefined -> wf:redirect("/login"); _ -> 
@@ -55,4 +56,10 @@ create_lxc(User) -> [
 
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).
 event(init) -> [];
-event(create_lxc) -> wf:redirect("/newlxc").
+event(create_lxc) ->
+    Box = node_server:create_box(wf:user(),10,64,0,[22,80]),
+    {Id,Ip,Port,User,Hostname,Pass,{Date,Time}} = Box,
+    error_logger:info_msg("Box: ~p",[Box]),
+    kvs:put(#box{id=Id,host=Hostname,pass=Pass,user=User,ssh=Port,datetime={Date,Time},ports=[22,80]}),
+    wf:redirect("/containers").
+

@@ -44,10 +44,7 @@ box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,ssh=Port}) ->
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).
 event(init) -> [];
 event(create) ->
-    Box = node_server:create_box(wf:user(),10,64,0,[22,80]),
-    {Id,Ip,Port,User,Hostname,Pass,{Date,Time}} = Box,
-    error_logger:info_msg("Box: ~p",[Box]),
-    kvs:put(#box{id=Id,host=Hostname,pass=Pass,user=User,ssh=Port,datetime={Date,Time},ports=[22,80]});
+   wf:redirect("/newlxc");
 event(_) -> [].
 
 coalesce(X) -> case X of undefined -> []; Z -> Z end.
