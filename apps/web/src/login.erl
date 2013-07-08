@@ -89,34 +89,32 @@ login(Key, Args)->
   case Args of
     [{error, E}|_Rest] -> error_logger:info_msg("oauth error: ~p", [E]);
     _ ->
-      CurrentUser = wf:user(),
+      CurrentUserEmail = case wf:user() of #user{email=EE} -> EE; _ -> undefined end,
       {Id, RegData} = registration_data(Args, Key),
       case kvs:all_by_index(user, Key, Id) of
         [] ->  case kvs_user:register(RegData) of
-            {ok, Name} -> login_user(Name);
+            {ok, Email} -> login_user(Email);
             {error, E} -> error_logger:info_msg("error: ~p", [E])
           end;
-        [User|_] when element(2,User) == CurrentUser -> ok;
-        [User|_] -> login_user(element(2, User))
+        [#user{email=Email}|_] when Email == CurrentUserEmail -> ok;
+        [#user{email=Email}|_] -> login_user(Email)
       end
   end.
 
-login_user(UserName) ->
-  case kvs:get(user, UserName) of
+login_user(Email) ->
+  case kvs:get(user, Email) of
     {ok, User}->
       %nsx_msg:notify(["login", "user", UserName, "update_after_login"], []),
-      Update = case kvs:get(user_status, UserName) of
+      Update = case kvs:get(user_status, Email) of
         {error, not_found} ->
-          #user_status{username = UserName, last_login = erlang:now()};
+          #user_status{username = Email, last_login = erlang:now()};
         {ok, UserStatus} -> UserStatus#user_status{last_login = erlang:now()}
         end,
       kvs:put(Update),
-
-      wf:session(user_info, User),
-      wf:user(UserName),
+      wf:user(User),
       wf:redirect("/account");
     {error, not_found}-> 
-      error_logger:info_msg("~p NOT FOUND", [UserName])
+      error_logger:info_msg("~p NOT FOUND", [Email])
   end.
 
 twitter_callback()->

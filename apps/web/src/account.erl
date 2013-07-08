@@ -17,8 +17,8 @@ body() -> index:header() ++ [
           dashboard:section(payments(wf:user()), "icon-list") ]} ]} } }
   ] ++ index:footer().
 
-profile_info(UserName) -> 
-  case kvs:get(user, UserName) of
+profile_info(User) -> 
+  case kvs:get(user, User#user.email) of
     {error, not_found} -> [];
     {ok,U} ->
       {{Y, M, D}, _} = calendar:now_to_datetime(U#user.register_date),

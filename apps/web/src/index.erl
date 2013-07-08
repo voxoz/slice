@@ -22,7 +22,7 @@ header(Inverse) -> [
             #li{body=[
               case wf:user() of
                 undefined -> #link{id=login1, body= <<"Dashboard">>, postback=to_login, delegate=login};
-                User -> case kvs:get(user, User) of {error, not_found} -> #link{id=login1, body= <<"Log in">>, postback=to_login, delegate=login};
+                User -> case kvs:get(user, User#user.email) of {error, not_found} -> #link{id=login1, body= <<"Log in">>, postback=to_login, delegate=login};
                   {ok, U} -> #link{class=["dropdown-toggle", "avatar"],
                     %data_fields=[{<<"data-toggle">>, <<"dropdown">>}],
                     url="/account", body=[
