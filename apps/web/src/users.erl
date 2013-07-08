@@ -1,5 +1,6 @@
 -module(users).
 -compile(export_all).
+-include_lib("ins/include/node_server.hrl").
 -include("users.hrl").
 
 % This is REST callbacks module for bucket USERS
@@ -19,3 +20,12 @@ to_html(User=#user{}) -> [<<"<tr><td>">>,coalesce(User#user.id),<<"</td><td>">>,
                                          coalesce(User#user.name),<<"</td></tr">>].
 
 coalesce(Name) -> case Name of undefined -> <<>>; A -> list_to_binary(A) end.
+
+join() ->
+    AllBoxes = [begin
+        net_adm:ping(Node),
+        Boxes = rpc:call(Node,kvs,all,[box]),
+        [ ets:insert(boxes,Box) || Box <- Boxes, is_list(Boxes) ],
+        Boxes
+    end || #instance{name=Node} <- kvs:all(instance) ],
+    ok.
