@@ -4,7 +4,6 @@ NODE=${1:-"instance_manager"}
 
 function release_node {
     rm -rf rels/$1/node/lib
-    rm -rf rels/$1/node/data
     rm -rf rels/$1/node/log
     rm -rf rels/$1/node/releases
     cd rels/$1
