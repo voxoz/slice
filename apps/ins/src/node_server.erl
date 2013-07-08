@@ -13,6 +13,7 @@ chinese() -> [{2013,2,10,"sn"},{2014,1,31,"ho"},{2015,2,19,"go"}].
 init_db() ->
     ?CREATE_TAB(instance),
     ?CREATE_TAB(release),
+    ?CREATE_TAB(region),
     ?CREATE_TAB(box),
 
     Users = [ #user{username="maxim",password="password"},
@@ -21,11 +22,7 @@ init_db() ->
     Regions = [ #region{name="do",provider="Digital Ocean"},
                 #region{name="hz",provider="Hetzner"},
                 #region{name="am",provider="Amazon"} ],
-
-    Instances = [ #instance{name="do1",region="do"},
-                  #instance{name="do2",region="do"}],
-
-    kvs:put(#instance{name='instance_server@do2.synrc.com',region="do",status=active}),
+    Instances = [ #instance{name='instance_server@do2.synrc.com',region="do",status=active} ],
 
     kvs:put(Users ++ Regions ++ Instances),
     ok.
