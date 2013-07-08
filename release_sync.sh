@@ -3,6 +3,7 @@
 wd=`pwd`
 appss=( "rels/instance_manager/node/lib/ins-1"
         "rels/instance_manager/node/lib/kvs-1"
+        "rels/instance_manager/node/lib/n2o-3.0"
         "rels/instance_manager/node/lib/web-1"
         "rels/instance_manager/node/lib/mqs-0.0.1")
 
