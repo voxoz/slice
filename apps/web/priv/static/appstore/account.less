@@ -40,6 +40,8 @@
     z-index: 1;
     overflow: hidden;
     padding-bottom:30px;
+    margin-left:13px;
+    @media (max-width: 767px) {margin-left:0;}
 
     & h3{
       margin-bottom:60px;
@@ -135,6 +137,8 @@
   /* Create LXC */
   .create-container{
     max-width:507px;
+    @media(max-width:768px){max-width:330px; margin:0 auto;}
+
     & .control-group{
       margin-bottom: 46px;
 
@@ -149,12 +153,22 @@
           }
         }
       }
-      & .controls {margin-left: 110px;}
+      & .controls { 
+        margin-left: 110px;
+        @media(max-width: 480px){
+          margin:0 auto;
+          width:100%;
+          text-align:center;
+        }
+      }
 
       & .control-label{
         font-size: 20pt;
         width:auto;
+        @media(max-width:480px){text-align:center;}
       }
+      & .btn-toolbar {@media(max-width:480px){text-align:center;}}
+      & .slider{@media(max-width:480px){margin-top:60px;} }
     }
   }
 }
