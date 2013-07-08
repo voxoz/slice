@@ -14,3 +14,5 @@ section(Body, Icon) ->
     #panel{class=[span1], body=#i{class=[Icon, "icon-2x"]}},
     #panel{class=[span11, "dashboard-unit"], body=Body}
   ]}.
+
+event(create_lxc) -> wf:redirect("/newlxc").

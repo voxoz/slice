@@ -4,7 +4,7 @@
 -include_lib("kvs/include/users.hrl").
 
 main() -> case wf:user() of undefined -> wf:redirect("/login"); _ -> 
-   [#dtl{file = "prod", bindings=[{title,<<"Containers">>},{body,body()}]}] end.
+   [#dtl{file = "dev", bindings=[{title,<<"Containers">>},{body,body()}]}] end.
 
 body() -> index:header() ++ [
   #section{id=content, body=
@@ -15,7 +15,7 @@ body() -> index:header() ++ [
   ] ++ index:footer().
 
 containers(User) -> [
-  #h3{body= <<"your linux boxes">>},
+  #h3{body= <<"your linux containers">>},
   #table{class=[table, "table-hover", containers],
     header=[ #tr{cells=[
       #th{body= <<"ID">>},
@@ -39,7 +39,7 @@ containers(User) -> [
         #td{body= <<"do1.synrc.com">>},
         #td{body= <<"49154">>},
         #td{body=#link{class=[btn], body= <<"Start">>}} ]} ]},
-    #panel{class=["btn-toolbar"], body=[#link{class=[btn, "btn-large", "btn-success"], body= <<"Create New Box">>}]} ].
+    #panel{class=["btn-toolbar"], body=[#link{id=createlxc, class=[btn, "btn-large", "btn-success"], body= <<"Create LXC">>, postback=create_lxc, delegate=dashboard}]} ].
 
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).
 event(init) -> [].
