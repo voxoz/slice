@@ -3,6 +3,7 @@
 -copyright('Synrc Research Center').
 -compile(export_all).
 -include_lib("kvs/include/users.hrl").
+-include_lib("ins/include/node_server.hrl").
 
 zodiac() ->  [{19,1,"ca"},{16,2,"aq"},{12,3,"pi"},{19,4,"ar"},{14,5,"ta"},{20,6,"ge"},{21,6,"cn"},
               {10,8,"le"},{16,9,"vi"},{31,10,"li"},{21,11,"se"},{30,11,"op"},{18,12,"sa"}].
@@ -87,7 +88,12 @@ create_box(User,Cpu,Ram,Cert,Ports) ->
     Id = docker_run(Hostname,User,Cpu,Ram,Ports),
     Port = docker_port(Id,22),
     Ip = hostname_ip(),
-    {Id,Ip,Port,User,Hostname,Pass,calendar:now_to_datetime(now())}.
+%    {Id,Ip,Port,User,Hostname,Pass,{Date,Time}} = Res,
+    Box = #box{id=Id,host=Hostname,region=Ip,pass=Pass,user=User,ssh=Port,datetime=calendar:now_to_datetime(now()),ports=[22,80]},
+    kvs:put(Box),
+    Box.
+%    Res = {Id,Ip,Port,User,Hostname,Pass,calendar:now_to_datetime(now())},
+%    .
 
 auth(User,Token) ->
     case ets:lookup(accounts,Token) of
