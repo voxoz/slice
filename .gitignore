@@ -1,6 +1,8 @@
 node
 ebin
 deps
+apps/web/priv/static/js/all.min.js
+apps/web/priv/static/js/bootstrap.min.js
 *.dets
 *.gz
 *.dump
