@@ -16,15 +16,12 @@ init_db() ->
     ?CREATE_TAB(region),
     ?CREATE_TAB(box),
 
-    Users = [ #user{username="maxim",password="password"},
-              #user{username="doxtop",password="password"} ],
-
     Regions = [ #region{name="do",provider="Digital Ocean"},
                 #region{name="hz",provider="Hetzner"},
                 #region{name="am",provider="Amazon"} ],
     Instances = [ #instance{name='instance_server@do2.synrc.com',region="do",status=active} ],
 
-    kvs:put(Users ++ Regions ++ Instances),
+    kvs:put(Regions ++ Instances),
     ok.
 
 hostname() -> 
