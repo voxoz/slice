@@ -4,10 +4,31 @@
 -compile(export_all).
 -include_lib("kvs/include/users.hrl").
 -include_lib("ins/include/node_server.hrl").
+-define(CREATE_TAB(T), store_mnesia:create_table(T, record_info(fields, T), [{storage, permanent}]) ).
 
 zodiac() ->  [{19,1,"ca"},{16,2,"aq"},{12,3,"pi"},{19,4,"ar"},{14,5,"ta"},{20,6,"ge"},{21,6,"cn"},
               {10,8,"le"},{16,9,"vi"},{31,10,"li"},{21,11,"se"},{30,11,"op"},{18,12,"sa"}].
 chinese() -> [{2013,2,10,"sn"},{2014,1,31,"ho"},{2015,2,19,"go"}].
+
+init_db() ->
+    ?CREATE_TAB(instance),
+    ?CREATE_TAB(release),
+    ?CREATE_TAB(box),
+
+    Users = [ #user{username="maxim",password="password"},
+              #user{username="doxtop",password="password"} ],
+
+    Regions = [ #region{name="do",provider="Digital Ocean"},
+                #region{name="hz",provider="Hetzner"},
+                #region{name="am",provider="Amazon"} ],
+
+    Instances = [ #instance{name="do1",region="do"},
+                  #instance{name="do2",region="do"}],
+
+    kvs:put(#instance{name='instance_server@do2.synrc.com',region="do",status=active}),
+
+    kvs:put(Users ++ Regions ++ Instances),
+    ok.
 
 hostname() -> 
     {{Y,M,D},Time} = calendar:now_to_datetime(now()), 
