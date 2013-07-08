@@ -102,3 +102,8 @@ auth(User,Token) ->
     case ets:lookup(accounts,Token) of
          [{_,User}] -> ok;
          _ -> error end.
+
+decide() ->
+    Instances = kvs:all(instance),
+    [First|Rest] = Instances,
+    First.
