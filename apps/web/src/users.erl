@@ -21,11 +21,15 @@ to_html(User=#user{}) -> [<<"<tr><td>">>,coalesce(User#user.id),<<"</td><td>">>,
 
 coalesce(Name) -> case Name of undefined -> <<>>; A -> list_to_binary(A) end.
 
+join_node(Instance = #instance{}) -> [ case net_adm:ping(Node) of pong -> rpc:call(Node,kvs,put,[Instance]); _ -> skip 
+            end || #instance{name=Node} <- kvs:all(instance) ], kvs:put(Instance).
+
+sync() -> [ case net_adm:ping(Node) of pong -> rpc:call(Node,users,join,[]); _ -> skip 
+            end || #instance{name=Node} <- kvs:all(instance) ].
+
 join() ->
-    AllBoxes = [begin
-        net_adm:ping(Node),
-        Boxes = rpc:call(Node,kvs,all,[box]),
-        [ ets:insert(boxes,Box) || Box <- Boxes, is_list(Boxes) ],
-        Boxes
-    end || #instance{name=Node} <- kvs:all(instance) ],
-    ok.
+    [case net_adm:ping(Node) of
+         pong -> Boxes = rpc:call(Node,kvs,all,[box]),
+                 [ ets:insert(boxes,Box) || Box <- Boxes, is_list(Boxes) ],
+                 Boxes;
+          _ -> skip end || #instance{name=Node} <- kvs:all(instance) ].
