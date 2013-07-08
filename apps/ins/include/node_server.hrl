@@ -1,5 +1,5 @@
 -record(region,{name,provider}).
 -record(instance, {name,user,region,status}).
--record(box,{name,instance,region,hostname,ram,cpu,ports,status}).
+-record(box,{id,user,host,pass,ssh,region,ram,cpu,ports,datetime,status}).
 -record(release,{name,box,instance,region,status}).
 -record(app,{name,release,box,instance,region,status}).
