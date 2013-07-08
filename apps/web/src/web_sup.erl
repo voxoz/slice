@@ -24,7 +24,10 @@ init([]) ->
 
     ets:new(boxes,[named_table,public,{keypos,2}]),
 
+
     users:init(),
+
+    users:join(),
 
     Pid = spawn(fun () -> wf:reg(lobby), chat_room([]) end),
 
