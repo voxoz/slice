@@ -16,17 +16,17 @@ main() ->
 
 body() ->
   index:header() ++ [
-  #panel{id="content", role="main", class=["theme-pattern-lightmesh", alt], body=[
+  #panel{id="content", role="main", class=["theme-pattern-lightmesh", alt], style="min-height: 700px;", body=[
   #section{class=[section], id=promo, body=[
   #panel{class=[container], body=[
     #panel{class=[modal, "modal-login"], body=[ 
       #panel{class=["form-horizontal"], id=loginform, body=[
         #panel{class=["modal-header"], body=[
           #button{class=[close], data_fields=[{<<"data-dismiss">>,<<"modal">>}], aria_states=[{<<"aria-hidden">>, <<"true">>}], body= <<"&times;">>},
-          #h3{body= <<"Log in to your account">>} ]},
+          #h3{body= <<"Sign In">>} ]},
         #panel{class=["modal-body"], body=[
           #panel{id=messages, body=[]},
-          #h3{class=["text-center"], body= <<"Mail as a Key">>},
+          #h3{class=["text-center"]}, %body= <<"With Mail as a Key">>},
           #panel{class=["btn-toolbar", "text-center"], body=[
             login_btn(twitter),
             login_btn(facebook),
@@ -57,16 +57,16 @@ body() ->
 %            ]}
 %          ]}
 
-        ]}
-%        #panel{class=["modal-footer"], body=[
-%          #link{class=["pull-left", "link-forgot"], body= <<"forgot password?">>},
+        ]},
+        #panel{class=["modal-footer"], body=[
+          #link{class=["pull-left", "link-forgot"], body= <<"Terms of Service">>, url="http://synrc.com/privacy.htm"}
 %          #button{id=login, class=[btn, "btn-info", "btn-large"], body= <<"Sign in">>, postback=login, source=[user,pass]}
-%        ]}
+        ]}
       ]}
     ]}
 %    #panel{class=["pull-center"], body=[<<"Not a member?">>, #link{body= <<" Sign Up">>} ]}
      ]} ]} ]} ] 
-    ++ index:footer_main() ++ [
+    ++ index:footer() ++ [
       facebook_sdk(),
       gplus_sdk()
     ].
