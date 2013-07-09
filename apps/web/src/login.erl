@@ -26,46 +26,47 @@ body() ->
           #h3{body= <<"Log in to your account">>} ]},
         #panel{class=["modal-body"], body=[
           #panel{id=messages, body=[]},
-          #h3{class=["text-center"], body= <<"Sign in with">>},
+          #h3{class=["text-center"], body= <<"Mail as a Key">>},
           #panel{class=["btn-toolbar", "text-center"], body=[
             login_btn(twitter),
             login_btn(facebook),
             login_btn(google) 
-            ]},
-          #h3{class=["text-center"], body= <<"or">>},#br{},
-          #panel{class=["control-group"], body=[
-            #label{class=["control-label"], for=user, body= <<"Mail">>},
-            #panel{class=[controls], body=[
-              #panel{class=["input-prepend"], body=[
-                #span{class=["add-on"], body=#i{class=["icon-user"]}},
-                #textbox{id=user, placeholder= <<"username">>, data_fields=[{<<"data-original-title">>, <<"">>}]}
-              ]}
             ]}
-          ]},
-          #panel{class=["control-group"], body=[
-            #label{class=["control-label"], for=pass, body= <<"Password">>},
-            #panel{class=[controls], body=[
-              #panel{class=["input-prepend"], body=[
-                #span{class=["add-on"], body=#i{class=["icon-lock"]}},
-                #password{id=pass, data_fields=[{<<"data-original-title">>, <<"">>}]}
-              ]}
-            ]}
-          ]},
-          #panel{class=["control-group"], body=[
-            #panel{class=[controls], body=[
-              #checkbox{id=remember, class=["checkbox"], checked=checked, body="Remember me"}
-            ]}
-          ]}
+%          #h3{class=["text-center"], body= <<"or">>},#br{},
+%          #panel{class=["control-group"], body=[
+%            #label{class=["control-label"], for=user, body= <<"Mail">>},
+%            #panel{class=[controls], body=[
+%              #panel{class=["input-prepend"], body=[
+%                #span{class=["add-on"], body=#i{class=["icon-user"]}},
+%                #textbox{id=user, placeholder= <<"username">>, data_fields=[{<<"data-original-title">>, <<"">>}]}
+%              ]}
+%            ]}
+%          ]},
+%          #panel{class=["control-group"], body=[
+%            #label{class=["control-label"], for=pass, body= <<"Password">>},
+%            #panel{class=[controls], body=[
+%              #panel{class=["input-prepend"], body=[
+%                #span{class=["add-on"], body=#i{class=["icon-lock"]}},
+%                #password{id=pass, data_fields=[{<<"data-original-title">>, <<"">>}]}
+%              ]}
+%            ]}
+%          ]},
+%          #panel{class=["control-group"], body=[
+%            #panel{class=[controls], body=[
+%              #checkbox{id=remember, class=["checkbox"], checked=checked, body="Remember me"}
+%            ]}
+%          ]}
 
-        ]},
-        #panel{class=["modal-footer"], body=[
-          #link{class=["pull-left", "link-forgot"], body= <<"forgot password?">>},
-          #button{id=login, class=[btn, "btn-info", "btn-large"], body= <<"Sign in">>, postback=login, source=[user,pass]}
         ]}
+%        #panel{class=["modal-footer"], body=[
+%          #link{class=["pull-left", "link-forgot"], body= <<"forgot password?">>},
+%          #button{id=login, class=[btn, "btn-info", "btn-large"], body= <<"Sign in">>, postback=login, source=[user,pass]}
+%        ]}
       ]}
-    ]},
-    #panel{class=["pull-center"], body=[<<"Not a member?">>, #link{body= <<" Sign Up">>} ]} ]} ]} ]} ] 
-    ++ index:footer() ++ [
+    ]}
+%    #panel{class=["pull-center"], body=[<<"Not a member?">>, #link{body= <<" Sign Up">>} ]}
+     ]} ]} ]} ] 
+    ++ index:footer_main() ++ [
       facebook_sdk(),
       gplus_sdk()
     ].
