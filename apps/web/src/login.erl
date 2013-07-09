@@ -88,7 +88,7 @@ api_event(Name,Tag,_Term) -> error_logger:info_msg("Login Name ~p~n, Tag ~p~n",[
 login_user(User) -> wf:user(User), wf:redirect("/account").
 login(Key, Args)-> case Args of [{error, E}|_Rest] -> error_logger:info_msg("oauth error: ~p", [E]);
     _ -> case kvs:get(user,email_prop(Args,Key)) of
-              {ok,Existed} -> login_user(Existed);
+              {ok,Existed} -> {Id, RegData} = registration_data(Args, Key, Existed), login_user(RegData);
               {error,_} -> {Id, RegData} = registration_data(Args, Key, #user{}),
                   case kvs_user:register(RegData) of
                       {ok, Registered} -> login_user(Registered);

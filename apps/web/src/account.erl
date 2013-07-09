@@ -17,10 +17,7 @@ body() -> index:header() ++ [
           dashboard:section(payments(wf:user()), "icon-list") ]} ]} } }
   ] ++ index:footer().
 
-profile_info(User) -> 
-  case kvs:get(user, User#user.email) of
-    {error, not_found} -> [];
-    {ok,U} ->
+profile_info(U) -> 
       {{Y, M, D}, _} = calendar:now_to_datetime(U#user.register_date),
       RegDate = io_lib:format("~p ~s ~p", [D, element(M, {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"}), Y]),
       Mailto = if U#user.email==undefined -> []; true-> iolist_to_binary(["mailto:", U#user.email]) end,
@@ -36,8 +33,7 @@ profile_info(User) ->
         #panel{body=[#label{body= <<"Name:">>}, #b{body= iolist_to_binary([U#user.name, " ", U#user.surname])}]},
         #panel{show_if=U#user.email=/=undefined, body=[#label{body= <<"Mail:">>}, #link{url= Mailto, body=#strong{body= U#user.email}}]},
         #panel{body=[#label{body= <<"Member since ">>}, #strong{body= RegDate}]},
-        #b{class=["text-success"], body= <<"Active">>} ]}}]}]
-  end.
+        #b{class=["text-success"], body= <<"Active">>} ]}}]}].
 
 ballance(User) -> [
   #h3{body= <<"Balance">>},
