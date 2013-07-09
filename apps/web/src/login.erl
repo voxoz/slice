@@ -93,9 +93,7 @@ login(Key, Args)-> case Args of [{error, E}|_Rest] -> error_logger:info_msg("oau
     _ -> case kvs:get(user,email_prop(Args,Key)) of
               {ok,Existed} -> {Id, RegData} = registration_data(Args, Key, Existed), login_user(RegData);
               {error,_} -> {Id, RegData} = registration_data(Args, Key, #user{}),
-                  case kvs_user:register(RegData) of
-                      {ok, Registered} -> login_user(Registered);
-                      {error, E} -> error_logger:info_msg("error: ~p", [E]) end end end.
+                  kvs:put(RegData), login_user(RegData) end end.
 
 twitter_callback()->
   Token = wf:q(<<"oauth_token">>),
