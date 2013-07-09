@@ -86,6 +86,22 @@ docker_run(Hostname,User,Cpu,Ram,Ports) ->
     Tokens = string:tokens(Res,"\n"),
     hd(Tokens).
 
+docker_start(Id) -> os:cmd(["docker start ",Id]).
+docker_stop(Id) -> os:cmd(["docker stop ",Id]).
+
+docker_ps() -> Res = os:cmd("docker ps"),
+    [kvs:put(B#box{status=undefined})||B<-kvs:all(box)],
+    Lines = string:tokens(Res,"\n"),
+    [ begin
+	Columns = string:tokens(Line," "),
+	case kvs:get(box,hd(Columns)) of
+	    {ok,Box} -> kvs:put(Box#box{status=running});
+	    {error,Reason} -> skip end,
+	error_logger:info_msg("~p~n",[Columns])
+    end || Line <- Lines],
+    error_logger:info_msg("~p",[Lines]).
+
+
 docker_port(Id,Port) ->
     Res = os:cmd(["docker port ",Id," ",integer_to_list(Port)]),
     [Tokens] = string:tokens(Res,"\n"),
