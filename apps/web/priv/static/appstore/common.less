@@ -57,6 +57,14 @@ body {
   overflow-y: auto;
 }
 
+.modal{&.modal-login{
+  width:700px;
+  & .form-horizontal{
+    & .controls{margin-left:260px;}
+    & .control-label{width:240px;}
+  }
+}}
+
 .tag(@size, @color){
   @fontSize: @baseFontSize * @size;
   font-size: @fontSize;
