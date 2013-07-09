@@ -144,7 +144,7 @@ registration_data(Props, facebook_id, Ori)->
     name = proplists:get_value(first_name, Props),
     surname = proplists:get_value(last_name, Props),
     facebook_id = Id,
-    team = kvs_meeting:create_team("tours"),
+%    team = kvs_meeting:create_team("tours"),
     age = {element(3, BirthDay), element(1, BirthDay), element(2, BirthDay)},
     register_date = erlang:now(),
     status = ok
@@ -163,7 +163,7 @@ registration_data(Props, googleplus_id, Ori)->
     name = GivenName,
     surname = FamilyName,
     googleplus_id = Id,
-    team = kvs_meeting:create_team("tours"),
+%    team = kvs_meeting:create_team("tours"),
     register_date = erlang:now(),
     sex = proplists:get_value(gender, Props),
     status = ok
@@ -179,7 +179,7 @@ registration_data(Props, twitter_id, Ori)->
     email = email_prop(Props,twitter_id),
     surname = [],
     twitter_id = Id,
-    team = kvs_meeting:create_team("tours"),
+%    team = kvs_meeting:create_team("tours"),
     register_date = erlang:now(),
     status = ok
   }};
@@ -194,15 +194,15 @@ registration_data(Props, github_id, Ori) ->
     name  = Name,
     surname = [],
     github_id = Id,
-    team = kvs_meeting:create_team("tours"),
+%    team = kvs_meeting:create_team("tours"),
     register_date = erlang:now(),
     status = ok
   }}.
 
 
 email_prop(Props, twitter_id) -> binary_to_list(proplists:get_value(<<"screen_name">>, Props)) ++ "@twitter.com";
+email_prop(Props, github_id) -> binary_to_list(proplists:get_value(<<"email">>, Props));
 email_prop(Props, _) -> proplists:get_value(email, Props).
-
 
 login_btn(google)-> #panel{id=plusloginbtn, class=["btn-group"], body=
   #link{class=[btn, "btn-google-plus", "btn-large"], body=[#i{class=["icon-google-plus", "icon-large"]}, <<"Google">>] }};
