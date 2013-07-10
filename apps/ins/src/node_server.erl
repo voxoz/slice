@@ -134,7 +134,4 @@ auth(User,Token) ->
          [{_,User}] -> ok;
          _ -> error end.
 
-decide() ->
-    Instances = kvs:all(instance),
-    [First|Rest] = Instances,
-    First.
+decide() -> {ok,I} = kvs:get(instance,'instance_server@do2.synrc.com'), I.
