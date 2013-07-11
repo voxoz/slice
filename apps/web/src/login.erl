@@ -84,8 +84,8 @@ event(Ev) ->
     error_logger:info_msg("Event ~p",[Ev]),
     ok.
 
-api_event(plusLogin, Args, _)-> login(googleplus_id, Args);
-api_event(fbLogin, Args, _Term)-> login(facebook_id, Args);
+api_event(plusLogin, Args, _)-> JSArgs = n2o_json:decode(Args), login(googleplus_id, JSArgs);
+api_event(fbLogin, Args, _Term)-> JSArgs = n2o_json:decode(Args), login(facebook_id, JSArgs);
 api_event(Name,Tag,_Term) -> error_logger:info_msg("Login Name ~p~n, Tag ~p~n",[Name,Tag]).
 
 login_user(User) -> wf:user(User), wf:redirect("/account").
@@ -130,47 +130,45 @@ github_callback() ->
 
 
 registration_data(Props, facebook_id, Ori)->
-  Id = proplists:get_value(id, Props),
-  UserName = proplists:get_value(username, Props),
-  BirthDay = case proplists:get_value(birthday, Props) of
+  Id = proplists:get_value(<<"id">>, Props),
+  UserName = binary_to_list(proplists:get_value(<<"username">>, Props)),
+  BirthDay = case proplists:get_value(<<"birthday">>, Props) of
     undefined -> {1, 1, 1970};
-    BD -> list_to_tuple([list_to_integer(X) || X <- string:tokens(BD, "/")])
+    BD -> list_to_tuple([list_to_integer(X) || X <- string:tokens(binary_to_list(BD), "/")])
   end,
   {proplists:get_value(id, Props), Ori#user{
     username = re:replace(UserName, "\\.", "_", [{return, list}]),
     display_name = UserName,
     avatar = "https://graph.facebook.com/" ++ UserName ++ "/picture",
     email = email_prop(Props, facebook_id),
-    name = proplists:get_value(first_name, Props),
-    surname = proplists:get_value(last_name, Props),
+    name = proplists:get_value(<<"first_name">>, Props),
+    surname = proplists:get_value(<<"last_name">>, Props),
     facebook_id = Id,
-%    team = kvs_meeting:create_team("tours"),
     age = {element(3, BirthDay), element(1, BirthDay), element(2, BirthDay)},
     register_date = erlang:now(),
     status = ok
   }};
 registration_data(Props, googleplus_id, Ori)->
-  Id = proplists:get_value(id, Props),
-  Name = proplists:get_value(name, Props),
-  GivenName = proplists:get_value(givenName, Name),
-  FamilyName = proplists:get_value(familyName, Name),
-  Image = proplists:get_value(image, Props),
+  Id = proplists:get_value(<<"id">>, Props),
+  Name = proplists:get_value(<<"name">>, Props),
+  GivenName = proplists:get_value(<<"givenName">>, Name#struct.lst),
+  FamilyName = proplists:get_value(<<"familyName">>, Name#struct.lst),
+  Image = proplists:get_value(<<"image">>, Props),
   {Id, Ori#user{
-    username = string:to_lower(GivenName ++ "_" ++ FamilyName),
-    display_name = proplists:get_value(displayName, Props),
-    avatar = lists:nth(1,string:tokens(proplists:get_value(url, Image), "?")),
+    username = string:to_lower(binary_to_list(<< GivenName/binary, <<"_">>/binary, FamilyName/binary>>)),
+    display_name = proplists:get_value(<<"displayName">>, Props),
+    avatar = lists:nth(1,string:tokens(binary_to_list(proplists:get_value(<<"url">>, Image#struct.lst)), "?")),
     email = email_prop(Props,googleplus_id),
     name = GivenName,
     surname = FamilyName,
     googleplus_id = Id,
-%    team = kvs_meeting:create_team("tours"),
     register_date = erlang:now(),
     sex = proplists:get_value(gender, Props),
     status = ok
   }};
 registration_data(Props, twitter_id, Ori)->
   Id = proplists:get_value(<<"id_str">>, Props),
-  UserName = proplists:get_value(<<"screen_name">>, Props),
+  UserName = binary_to_list(proplists:get_value(<<"screen_name">>, Props)),
   {Id, Ori#user{
     username = re:replace(UserName, "\\.", "_", [{return, list}]),
     display_name = proplists:get_value(<<"screen_name">>, Props),
@@ -179,7 +177,6 @@ registration_data(Props, twitter_id, Ori)->
     email = email_prop(Props,twitter_id),
     surname = [],
     twitter_id = Id,
-%    team = kvs_meeting:create_team("tours"),
     register_date = erlang:now(),
     status = ok
   }};
@@ -190,19 +187,17 @@ registration_data(Props, github_id, Ori) ->
     username = binary_to_list(proplists:get_value(<<"login">>, Props)),
     display_name = Name,
     avatar = proplists:get_value(<<"avatar_url">>, Props),
-    email = binary_to_list(proplists:get_value(<<"email">>, Props)),
+    email = email_prop(Props, github_id),
     name  = Name,
     surname = [],
     github_id = Id,
-%    team = kvs_meeting:create_team("tours"),
     register_date = erlang:now(),
     status = ok
   }}.
 
 
 email_prop(Props, twitter_id) -> binary_to_list(proplists:get_value(<<"screen_name">>, Props)) ++ "@twitter.com";
-email_prop(Props, github_id) -> binary_to_list(proplists:get_value(<<"email">>, Props));
-email_prop(Props, _) -> proplists:get_value(email, Props).
+email_prop(Props, _) -> binary_to_list(proplists:get_value(<<"email">>, Props)).
 
 login_btn(google)-> #panel{id=plusloginbtn, class=["btn-group"], body=
   #link{class=[btn, "btn-google-plus", "btn-large"], body=[#i{class=["icon-google-plus", "icon-large"]}, <<"Google">>] }};
