@@ -26,24 +26,48 @@ containers(User) ->
       header=[#tr{cells=[
         #th{body= <<"ID">>},
         #th{body= <<"Host">>},
-        #th{body= <<"Pass">>},
+%        #th{body= <<"Pass">>},
         #th{body= <<"Region">>},
         #th{body= <<"SSH">>},
         #th{body= <<"action">>}]} ],
       rows=[ box(Box) || Box <- Boxes ]} end,
   #panel{class=["btn-toolbar"], body=[#button{id=create, class=[btn, "btn-large", "btn-success"], body= <<"Create LXC">>, postback=create_lxc, delegate=dashboard}]} ].
 
-box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,ssh=Port}) ->
-    #tr{class=[success], cells=[
+box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,ssh=Port,status=Status}) ->
+    #tr{class=[status(Status)], cells=[
         #td{body= wf:to_list(coalesce(Id))},
         #td{body= wf:to_list(coalesce(Hostname))},
-        #td{body= wf:to_list(coalesce(Pass))},
-        #td{body= wf:to_list(coalesce(Region))},
+%        #td{body= wf:to_list(coalesce(Pass))},
+        #td{body= region(Region)},
         #td{body= wf:to_list(coalesce(Port))},
-        #td{body= #button{class=[btn],body= <<"Stop">>, postback={stop,Id}}} ]}.
+        #td{body= button(Status,Id,Region)} ]}.
+
+region(Region) -> [Name,Server] = string:tokens(atom_to_list(Region),"@"), Server.
+status(running) -> success;
+status(_) -> error.
+button(running,Id,Region) -> #button{id=Id,class=[btn],body= <<"Stop">>, postback={stop,Id,Region}, delegate=containers};
+button(_,Id,Region) -> #button{id=Id,class=[btn],body= <<"Start">>, postback={start,Id,Region}, delegate=containers}.
+
 
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).
 event(init) -> [];
-event(_) -> [].
+event({start,Id,Region}) -> 
+    Res = rpc:call(Region,node_server,docker_start,[Id]),
+    case kvs:get(box,Id) of
+        {ok,Box} -> kvs:put(Box#box{status=running});
+        _ -> skip end,
+    error_logger:info_msg("START LXC: ~p",[Res]),
+    wf:redirect("/containers");
+event({stop,Id,Region}) ->
+    Res = rpc:call(Region,node_server,docker_stop,[Id]),
+    case kvs:get(box,Id) of
+        {ok,Box} -> kvs:put(Box#box{status=undefined});
+        _ -> skip end,
+    error_logger:info_msg("STOP LXC: ~p",[Res]),
+    wf:redirect("/containers");
+event(X) -> 
+   error_logger:info_msg("Unknown Event: ~p",[X]),
+  ok.
+
 
 coalesce(X) -> case X of undefined -> []; Z -> Z end.
