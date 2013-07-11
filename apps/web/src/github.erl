@@ -30,6 +30,6 @@ api_call(Name, Props) ->
   Token = [{"access_token", proplists:get_value("access_token", Props)}],
   case httpc:request(get, {oauth:uri(?API_URI++Name, Token), ?REQ_HEADER}, [], []) of
     {error, reason} -> api_error;
-    {ok, {HttpResponse, _, Body}} -> case HttpResponse of {"HTTP/1.1", 200, "OK"} -> mochijson2:decode(Body); _ -> error end;
+    {ok, {HttpResponse, _, Body}} -> case HttpResponse of {"HTTP/1.1", 200, "OK"} -> n2o_json:decode(Body); _ -> error end;
     {ok, _} -> api_error
   end.
