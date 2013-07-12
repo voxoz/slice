@@ -38,7 +38,7 @@ api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Te
 event(init) -> [];
 event(create_lxc) ->
     Node = node_server:decide(),
-    Res = rpc:call(Node#instance.name,node_server,create_box,[(wf:user())#user.email,10,64,0,[22,8000,8989]]),
+    Res = rpc:call(Node#instance.name,node_server,create_box,[(wf:user())#user.email,0,0,0,[22,8000,8989]]),
     error_logger:info_msg("Box: ~p",[Res]),
     ets:insert(boxes,Res),
     wf:redirect("/containers").

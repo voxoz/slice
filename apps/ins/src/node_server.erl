@@ -118,16 +118,13 @@ create_box(User,Cpu,Ram,Cert,Ports) ->
     make_template(Hostname,User,Code),
     LXC = docker_build(Hostname,User),
     docker_commit(LXC,Hostname,User),
-%    docker_push(Hostname,User),
     Id = docker_run(Hostname,User,Cpu,Ram,Ports),
     Port = docker_port(Id,22),
     Ip = hostname_ip(),
-%    {Id,Ip,Port,User,Hostname,Pass,{Date,Time}} = Res,
-    Box = #box{id=Id,host=Hostname,region=node(),pass=Pass,user=User,ssh=Port,datetime=calendar:now_to_datetime(now()),ports=Ports},
+    Box = #box{id=Id,host=Hostname,region=node(),pass=Pass,ports=Ports,
+                user=User,ssh=Port,datetime=calendar:now_to_datetime(now())},
     kvs:put(Box),
     Box.
-%    Res = {Id,Ip,Port,User,Hostname,Pass,calendar:now_to_datetime(now())},
-%    .
 
 auth(User,Token) ->
     case ets:lookup(accounts,Token) of
