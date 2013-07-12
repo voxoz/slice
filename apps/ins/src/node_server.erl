@@ -123,7 +123,7 @@ create_box(User,Cpu,Ram,Cert,Ports) ->
     Port = docker_port(Id,22),
     Ip = hostname_ip(),
 %    {Id,Ip,Port,User,Hostname,Pass,{Date,Time}} = Res,
-    Box = #box{id=Id,host=Hostname,region=Ip,pass=Pass,user=User,ssh=Port,datetime=calendar:now_to_datetime(now()),ports=[22,80]},
+    Box = #box{id=Id,host=Hostname,region=node(),pass=Pass,user=User,ssh=Port,datetime=calendar:now_to_datetime(now()),ports=[22,80]},
     kvs:put(Box),
     Box.
 %    Res = {Id,Ip,Port,User,Hostname,Pass,calendar:now_to_datetime(now())},
