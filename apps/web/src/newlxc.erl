@@ -39,7 +39,7 @@ api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Te
 event(init) -> [];
 event(create_lxc) ->
     Node = node_server:decide(),
-    Hostname = wf:q(<<"release">>),
+    Hostname = wf:q(release),
     Res = rpc:call(Node#instance.name,node_server,create_box,[Hostname,(wf:user())#user.email,0,0,0,[22,8000,8989]]),
     error_logger:info_msg("Box: ~p",[Res]),
     ets:insert(boxes,Res),
