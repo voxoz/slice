@@ -88,7 +88,7 @@ api_event(plusLogin, Args, _)-> JSArgs = n2o_json:decode(Args), login(googleplus
 api_event(fbLogin, Args, _Term)-> JSArgs = n2o_json:decode(Args), login(facebook_id, JSArgs#struct.lst);
 api_event(Name,Tag,_Term) -> error_logger:info_msg("Login Name ~p~n, Tag ~p~n",[Name,Tag]).
 
-login_user(User) -> wf:user(User), wf:redirect("/account").
+login_user(User) -> wf:user(User), wf:redirect("/containers").
 login(Key, Args)-> case Args of [{error, E}|_Rest] -> error_logger:info_msg("oauth error: ~p", [E]);
     _ -> case kvs:get(user,email_prop(Args,Key)) of
               {ok,Existed} -> {Id, RegData} = registration_data(Args, Key, Existed), login_user(RegData);
