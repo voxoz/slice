@@ -85,7 +85,7 @@ docker_push(Hostname,User) -> os:cmd(["docker push voxoz/",User,Hostname]).
 
 docker_run(Hostname,User,Cpu,Ram,Ports) ->
     P = string:join([ "-p " ++ integer_to_list(Port) || Port <- Ports], " "),
-    Cmd = ["docker run -d ",P," -c=",integer_to_list(Cpu)," -h=\"",Hostname,"\" voxoz/",User,Hostname,
+    Cmd = ["docker run -d ",P," -m=",integer_to_list(Ram)," -h=\"",Hostname,"\" voxoz/",User,Hostname,
            " /usr/bin/supervisord -n"],
     Res = os:cmd(Cmd),
     Tokens = string:tokens(Res,"\n"),
@@ -96,7 +96,7 @@ docker_start(Id) ->
     {ok,Box} = kvs:get(box,Id),
     Ports = [{P,docker_port(Id,P)}||{P,M}<-Box#box.portmap],
     kvs:put(Box#box{status=undefined,portmap=Ports}),
-    make_nginx_template(Box#box.name,containers:region(Box#box.region),proplists:get_value(8989,Ports)),
+    make_nginx_template(Box#box.host,containers:region(Box#box.region),proplists:get_value(8989,Ports)),
     os:cmd("sudo service nginx reload").
 
 docker_stop(Id) ->
@@ -138,7 +138,7 @@ create_box(Hostname,User,Cpu,Ram,Cert,Ports) ->
     PortMap = [{Port,docker_port(Id,Port)}|| Port <- Ports],
     Ip = hostname_ip(),
     Box = #box{id=Id,host=Hostname,region=node(),pass=Pass,portmap=PortMap,
-                user=User,ssh=proplists:get_value(22,PortMap),datetime=calendar:now_to_datetime(now())},
+                user=User,ssh=proplists:get_value(22,PortMap),datetime=calendar:now_to_datetime(now()),name=Hostname},
     kvs:put(Box),
     Box.
 
