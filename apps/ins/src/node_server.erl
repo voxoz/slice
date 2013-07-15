@@ -86,8 +86,17 @@ docker_run(Hostname,User,Cpu,Ram,Ports) ->
     Tokens = string:tokens(Res,"\n"),
     hd(Tokens).
 
-docker_start(Id) -> os:cmd(["docker start ",Id]).
-docker_stop(Id) -> os:cmd(["docker stop ",Id]).
+docker_start(Id) ->
+    os:cmd(["docker start ",Id]),
+    {ok,Box} = kvs:get(box,Id),
+    Ports = [{P,docker_port(Id,P)}||{P,M}<-Box#box.portmap],
+    kvs:put(Box#box{status=undefined,portmap=Ports}).
+
+docker_stop(Id) ->
+    os:cmd(["docker stop ",Id]),
+    {ok,Box} = kvs:get(box,Id),
+    Ports = [{P,0}||{P,M}<-Box#box.portmap],
+    kvs:put(Box#box{status=running,portmap=Ports}).
 
 docker_ps() -> Res = os:cmd("docker ps"),
     [kvs:put(B#box{status=undefined})||B<-kvs:all(box)],
