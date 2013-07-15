@@ -1,0 +1,8 @@
+server {
+    server_name {{name}}.spawnproc.com;
+    charset utf-8;
+    location / {
+        proxy_pass http://{{region}}:{{port}};
+    }
+    access_log  /var/log/nginx/{{name}}.access.log;
+}

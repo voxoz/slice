@@ -62,11 +62,16 @@ make_pass() ->
     [Code] = string:tokens(Res2,"\n"),
     {Pass,Code}.
 
-make_template(Hostname,User,Pass) ->
+make_docker_template(Hostname,User,Pass) ->
     erlydtl:compile(code:priv_dir(ins) ++ "/" ++ "Dockerfile.template",docker_template),
     {ok,File} = docker_template:render([{password,Pass}]),
     os:cmd(["mkdir -p users/",User,Hostname]),
     file:write_file(["users/",User,Hostname,"/Dockerfile"], File).
+
+make_nginx_template(Name,Region,Port) ->
+    erlydtl:compile(code:priv_dir(ins) ++ "/" ++ "nginx.template",nginx_template),
+    {ok,File} = nginx_template:render([{name,Name},{region,Region},{port,Port}]),
+    file:write_file(["/etc/nginx/sites-enabled/",Name], File).
 
 docker_build(Hostname,User) ->
     Res = os:cmd(["docker build users/",User,Hostname]),
@@ -90,7 +95,9 @@ docker_start(Id) ->
     os:cmd(["docker start ",Id]),
     {ok,Box} = kvs:get(box,Id),
     Ports = [{P,docker_port(Id,P)}||{P,M}<-Box#box.portmap],
-    kvs:put(Box#box{status=undefined,portmap=Ports}).
+    kvs:put(Box#box{status=undefined,portmap=Ports}),
+    make_nginx_template(Box#box.name,containers:region(Box#box.region),proplists:get_value(8989,Ports)),
+    os:cmd("sudo service nginx reload").
 
 docker_stop(Id) ->
     os:cmd(["docker stop ",Id]),
@@ -125,7 +132,7 @@ hostname_ip() ->
 create_box(User,Cpu,Ram,Cert,Ports) ->
     {Pass,Code} = make_pass(),
     Hostname = [hostname(),integer_to_list(kvs:next_id(feed))],
-    make_template(Hostname,User,Code),
+    make_docker_template(Hostname,User,Code),
     LXC = docker_build(Hostname,User),
     docker_commit(LXC,Hostname,User),
     Id = docker_run(Hostname,User,Cpu,Ram,Ports),
