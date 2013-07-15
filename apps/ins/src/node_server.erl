@@ -89,7 +89,7 @@ docker_run(Hostname,User,Cpu,Ram,Ports) ->
            " /usr/bin/supervisord -n"],
     Res = os:cmd(Cmd),
     Tokens = string:tokens(Res,"\n"),
-    hd(Tokens).
+    hd(lists:reverse(Tokens)).
 
 docker_start(Id) ->
     os:cmd(["docker start ",Id]),
