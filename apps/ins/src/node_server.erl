@@ -104,8 +104,9 @@ docker_ps() -> Res = os:cmd("docker ps"),
 
 docker_port(Id,Port) ->
     Res = os:cmd(["docker port ",Id," ",integer_to_list(Port)]),
-    [Tokens] = string:tokens(Res,"\n"),
-    list_to_integer(Tokens).
+    case string:tokens(Res,"\n") of
+        [Tokens] -> list_to_integer(Tokens);
+	_ -> 0 end.
 
 hostname_ip() ->
     Res = os:cmd("hostname -I"),
@@ -119,10 +120,10 @@ create_box(User,Cpu,Ram,Cert,Ports) ->
     LXC = docker_build(Hostname,User),
     docker_commit(LXC,Hostname,User),
     Id = docker_run(Hostname,User,Cpu,Ram,Ports),
-    Port = docker_port(Id,22),
+    PortMap = [{Port,docker_port(Id,Port)}|| Port <- Ports],
     Ip = hostname_ip(),
-    Box = #box{id=Id,host=Hostname,region=node(),pass=Pass,ports=Ports,
-                user=User,ssh=Port,datetime=calendar:now_to_datetime(now())},
+    Box = #box{id=Id,host=Hostname,region=node(),pass=Pass,portmap=PortMap,
+                user=User,ssh=proplists:get_value(22,PortMap),datetime=calendar:now_to_datetime(now())},
     kvs:put(Box),
     Box.
 
@@ -132,3 +133,9 @@ auth(User,Token) ->
          _ -> error end.
 
 decide() -> {ok,I} = kvs:get(instance,'instance_server@do2.synrc.com'), I.
+
+transform_box() ->
+    Fun = fun({box,Id,User,Host,Pass,Region,Ram,Cpu,Ports,Datetime,Status}) -> 
+              {box,Id,User,Host,Pass,Region,Ram,Cpu,Ports,Datetime,Status,0} end,
+    Retur = mnesia:transform_table(box, Fun, [id,user,host,pass,ssh,region,ram,cpu,portmap,datetime,status,name]),
+    io:format("Retur = ~p~n",[Retur]).
