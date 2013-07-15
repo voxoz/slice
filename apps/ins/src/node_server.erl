@@ -49,9 +49,9 @@ login(User,Pass) ->
             Token;
         _ -> skip end.
 
-create(User,Token,Cpu,Ram,Cert,Ports) ->
+create(Hostname,User,Token,Cpu,Ram,Cert,Ports) ->
     case auth(User,Token) of
-         ok -> create_box(User,Cpu,Ram,Cert,Ports);
+         ok -> create_box(Hostname,User,Cpu,Ram,Cert,Ports);
          Error -> Error end.
 
 make_pass() ->
@@ -129,9 +129,8 @@ hostname_ip() ->
     IP = string:tokens(Res," "),
     hd(IP).
 
-create_box(User,Cpu,Ram,Cert,Ports) ->
+create_box(Hostname,User,Cpu,Ram,Cert,Ports) ->
     {Pass,Code} = make_pass(),
-    Hostname = [hostname(),integer_to_list(kvs:next_id(feed))],
     make_docker_template(Hostname,User,Code),
     LXC = docker_build(Hostname,User),
     docker_commit(LXC,Hostname,User),

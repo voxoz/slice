@@ -33,13 +33,13 @@ containers(User) ->
       rows=[ box(Box) || Box <- Boxes ]} end,
   #panel{class=["btn-toolbar"], body=[#button{id=create, class=[btn, "btn-large", "btn-success"], body= <<"Create LXC">>, postback=create_lxc, delegate=dashboard}]} ].
 
-box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,ssh=Port,status=Status}) ->
+box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,portmap=Ports,status=Status}) ->
     #tr{class=[status(Status)], cells=[
         #td{body= wf:to_list(coalesce(Hostname))},
 %        #td{body= wf:to_list(coalesce(Id))},
         #td{body= wf:to_list(coalesce(Pass))},
         #td{body= region(Region)},
-        #td{body= wf:to_list(coalesce(Port))},
+        #td{body= wf:to_list(coalesce(proplists:get_value(22,Ports)))},
         #td{body= button(Status,Id,Region)} ]}.
 
 region(Region) -> [Name,Server] = string:tokens(atom_to_list(Region),"@"), Server.
