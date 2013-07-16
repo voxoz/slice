@@ -17,8 +17,8 @@ header(Inverse) -> [
             #li{body=#link{body= <<"Home">>,url="http://voxoz.com/"}},
             #li{body=#link{body= <<"Pricing">>,url="http://voxoz.com/pricing.html"}},
             #li{body=#link{body= <<"Apps">>,url="http://voxoz.com/apps.html"}},
-            #li{body=#link{body= <<"Devs">>,url="#"}},
-            #li{body=#link{body= <<"About">>,url="#"}},
+ %           #li{body=#link{body= <<"Devs">>,url="#"}},
+%            #li{body=#link{body= <<"About">>,url="#"}},
             #li{body=[
               case wf:user() of
                 undefined -> #link{id=login1, body= <<"Dashboard">>, postback=to_login, delegate=login};
