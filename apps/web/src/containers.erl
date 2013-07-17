@@ -25,7 +25,7 @@ containers(User) ->
      _ -> #table{class=[table, "table-hover", containers],
       header=[#tr{cells=[
 %        #th{body= <<"ID">>},
-        #th{body= <<"Name">>},
+        #th{body= <<"Hostname">>},
         #th{body= <<"Password">>},
         #th{body= <<"Host">>},
         #th{body= <<"Port">>},
