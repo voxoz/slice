@@ -30,12 +30,12 @@ containers(User) -> [
       #th{body= <<"LXC">>},
       #th{body= <<"Live">>},
       #th{body= <<"Sync">>}]} ],
-    rows=[
+    body=[[
         row(success,"app","gn1.synrc.com","Stop","Update"),
         row(success,"game","gn1.synrc.com","Start","Initial Push"),
         row(success,"web","gn1.synrc.com","Stop","Update"),
         row(warning,"web","skyline.synrc.com","Stop","Update")
-      ]},
+      ]]},
     #panel{class=["btn-toolbar"], body=[#link{id=createrel, class=[btn, "btn-large", "btn-success"], body= <<"Create Release">>, postback=create_release, delegate=dashboard}]} ].
 
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).

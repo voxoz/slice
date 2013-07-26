@@ -70,3 +70,5 @@ footer_main()-> [
 event(login) -> User = wf:q(user), wf:user(User), 
     error_logger:info_msg("Login Pressed Indeex"),
     wf:redirect("/account").
+
+main() -> [].

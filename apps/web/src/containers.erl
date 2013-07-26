@@ -30,7 +30,7 @@ containers(User) ->
         #th{body= <<"Host">>},
         #th{body= <<"Port">>},
         #th{body= <<"Action">>}]} ],
-      rows=[ box(Box) || Box <- Boxes ]} end,
+      body=[ [box(Box) || Box <- Boxes ]]} end,
   #panel{class=["btn-toolbar"], body=[#button{id=create, class=[btn, "btn-large", "btn-success"], body= <<"Create LXC">>, postback=create_lxc, delegate=dashboard}]} ].
 
 box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,portmap=Ports,status=Status}) ->
