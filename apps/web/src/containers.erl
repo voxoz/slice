@@ -34,8 +34,11 @@ containers(User) ->
   #panel{class=["btn-toolbar"], body=[#button{id=create, class=[btn, "btn-large", "btn-success"], body= <<"Create LXC">>, postback=create_lxc, delegate=dashboard}]} ].
 
 box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,portmap=Ports,status=Status}) ->
+    Link = case Status of
+                running -> #link{body=[wf:to_list(coalesce(Hostname))],url="//"++coalesce(Hostname)++".spawnproc.com"};
+                _ -> wf:to_list(coalesce(Hostname)) end,
     #tr{class=[status(Status)], cells=[
-        #td{body= wf:to_list(coalesce(Hostname))},
+        #td{body= Link},
 %        #td{body= wf:to_list(coalesce(Id))},
         #td{body= wf:to_list(coalesce(Pass))},
         #td{body= region(Region)},
