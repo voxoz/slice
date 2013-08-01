@@ -48,7 +48,9 @@ box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,portmap=Ports,sta
 region(Region) -> [Name,Server] = string:tokens(atom_to_list(Region),"@"), Server.
 status(running) -> success;
 status(_) -> error.
-button(running,Id,Region) -> #button{id=Id,class=[btn],body= <<"Stop">>, postback={stop,Id,Region}, delegate=containers};
+button(running,Id,Region) -> 
+  wf:wire(wf:f("$('#~s').on('click', function(){$(this).html(\"<i class='icon-spinner icon-spin'></i> \"+$(this).html()); });", [Id])),
+  #button{id=Id,class=[btn],body= <<"Stop">>, postback={stop,Id,Region}, delegate=containers};
 button(_,Id,Region) ->
   wf:wire(wf:f("$('#~s').on('click', function(){$(this).html(\"<i class='icon-spinner icon-spin'></i> \"+$(this).html()); });", [Id])),
   #button{id=Id,class=[btn],body=[ <<" Start">>], postback={start,Id,Region}, delegate=containers}.
