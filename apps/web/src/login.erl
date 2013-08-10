@@ -197,9 +197,10 @@ registration_data(Props, github_id, Ori) ->
 email_prop(Props, twitter_id) -> binary_to_list(proplists:get_value(<<"screen_name">>, Props)) ++ "@twitter.com";
 email_prop(Props, X) ->
         Mail = proplists:get_value(<<"email">>, Props),
-        error_logger:info_msg("Auth: ~p Mail ~p", [X,Mail]),
+        error_logger:info_msg("Auth: ~p Mail ~p Props ~p", [X,Mail,Props]),
         case {X,Mail} of 
              {github_id,null} -> binary_to_list(proplists:get_value(<<"login">>, Props)) ++ "@github.com";
+             {github_id,undefined} -> binary_to_list(proplists:get_value(<<"login">>, Props)) ++ "@github.com";
              {_,Mail} -> binary_to_list(Mail);
              {_,_} -> "hacker@voxoz.com" end.
 
