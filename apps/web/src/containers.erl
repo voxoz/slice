@@ -19,7 +19,7 @@ containers(User) ->
 %  Boxes = [ B || B <- ets:foldl(fun(C,A) -> [C|A] end,[],boxes), B#box.user == (wf:user())#user.email ],
   Boxes = [ B || B <- kvs:all(box), B#box.user == (wf:user())#user.email ],
   [
-  #h3{body= <<"sshpass -p &lt;password&gt; ssh root@&lt;host&gt; -p &lt;port&gt;">>},
+  #h3{body= <<"ssh root@&lt;hostname&gt; -p &lt;port&gt;">>},
   case Boxes of
      [] -> [<<"You have no containers yet.">>, #br{}, #br{}];
      _ -> #table{class=[table, "table-hover", containers],
@@ -27,21 +27,22 @@ containers(User) ->
 %        #th{body= <<"ID">>},
         #th{body= <<"Hostname">>},
         #th{body= <<"Password">>},
-        #th{body= <<"Host">>},
+%        #th{body= <<"Host">>},
         #th{body= <<"Port">>},
         #th{body= <<"Action">>}]} ],
       body=[ [box(Box) || Box <- Boxes ]]} end,
   #panel{class=["btn-toolbar"], body=[#button{id=create, class=[btn, "btn-large", "btn-success"], body= <<"Create LXC">>, postback=create_lxc, delegate=dashboard}]} ].
 
 box(#box{id=Id,host=Hostname,pass=Pass,region=Region,user=User,portmap=Ports,status=Status}) ->
+    Host = wf:to_list(coalesce(Hostname))++".spawnproc.com",
     Link = case Status of
-                running -> #link{body=[wf:to_list(coalesce(Hostname))],url="//"++coalesce(Hostname)++".spawnproc.com"};
-                _ -> wf:to_list(coalesce(Hostname)) end,
+                running -> #link{body=[Host],url="//"++Host};
+                _ -> Host end,
     #tr{class=[status(Status)], cells=[
         #td{body= Link},
 %        #td{body= wf:to_list(coalesce(Id))},
         #td{body= wf:to_list(coalesce(Pass))},
-        #td{body= region(Region)},
+%        #td{body= region(Region)},
         #td{body= wf:to_list(coalesce(proplists:get_value(22,Ports)))},
         #td{body= button(Status,Id,Region)} ]}.
 
