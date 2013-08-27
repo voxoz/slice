@@ -3,7 +3,7 @@
 -include_lib("avz/include/avz.hrl").
 -include_lib("n2o/include/wf.hrl").
 -include_lib("kvs/include/users.hrl").
--define(VOXOZ,[facebook,google,twitter]).
+-define(VOXOZ,[facebook,google,twitter,github]).
 
 main() ->
   avz:callbacks(?VOXOZ),
