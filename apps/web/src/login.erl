@@ -13,5 +13,6 @@ main() ->
                                               {sdk,avz:sdk(?VOXOZ)},
                                               {buttons,avz:buttons(?VOXOZ)}]} ].
 
+event(login) -> wf:redirect("/containers");
 event(X) -> avz:event(X).
 api_event(X,Y,Z) -> avz:api_event(X,Y,Z).
