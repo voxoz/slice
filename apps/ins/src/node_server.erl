@@ -62,16 +62,26 @@ make_pass() ->
     [Code] = string:tokens(Res2,"\n"),
     {Pass,Code}.
 
+priv_file(Name) -> filename:join(code:priv_dir(application:get_application()), Name).
+userdir(User, Hostname) -> filename:join(["users", User ++ Hostname]).
+write_file(Name, Content) -> filelib:ensure_dir(Name), file:write_file(Name, Content).
+
+prepare_template(docker_template) ->
+    erlydtl:compile(priv_file("Dockerfile.template"), docker_template);
+prepare_template(nginx_template) ->
+    erlydtl:compile(priv_file("nginx.template"), nginx_template);
+prepare_template(_) -> ok.
+
 make_docker_template(Hostname,User,Pass) ->
-    erlydtl:compile(code:priv_dir(ins) ++ "/" ++ "Dockerfile.template",docker_template),
-    {ok,File} = docker_template:render([{password,Pass}]),
-    os:cmd(["mkdir -p users/",User,Hostname]),
-    file:write_file(["users/",User,Hostname,"/Dockerfile"], File).
+    prepare_template(docker_template),
+    {ok, Rendered} = docker_template:render([{password, Pass}]),
+    Dockerfile = filename:join(userdir(User, Hostname), "Dockerfile"),
+    write_file(Dockerfile, Rendered).
 
 make_nginx_template(Name,Region,Port) ->
-    erlydtl:compile(code:priv_dir(ins) ++ "/" ++ "nginx.template",nginx_template),
-    {ok,File} = nginx_template:render([{name,Name},{region,Region},{port,Port}]),
-    file:write_file(["/etc/nginx/sites-enabled/",Name], File).
+    prepare_template(nginx_template),
+    {ok, Rendered} = nginx_template:render([{name,Name},{region,Region},{port,Port}]),
+    write_file(filename:join("/etc/nginx/sites-enabled", Name), Rendered).
 
 docker_build(Hostname,User) ->
     Res = os:cmd(["docker build users/",User,Hostname]),
