@@ -25,7 +25,7 @@
                             <div class="btn-toolbar text-center">
                                 {{buttons}}
                             </div>
-                            <h3 class="text-center">or</h3>
+                            <!--h3 class="text-center">or</h3>
                             <div class="control-group">
                                 <label class="control-label" for="user">Email</label>
                                 <div class="controls">
@@ -48,12 +48,12 @@
                                 <div class="controls">
                                     <label class="checkbox" for="remember"><input id="remember" type="checkbox" data-toggle="checkbox" value="on" not_checked="true">Remember me</label>
                                 </div>
-                            </div>
+                            </div-->
                         </div>
-                        <div class="modal-footer">
+                        <!--div class="modal-footer">
                             <a href="javascript:void(0);" class="pull-left link-forgot">forgot password?</a>
                             <button id="login" type="button" class="btn btn-info btn-large">Sign in</button>
-                        </div>
+                        </div-->
                     </div>
                 </div>
                 <div class="pull-center">Not a member?<a href="javascript:void(0);"> Sign Up</a></div>
