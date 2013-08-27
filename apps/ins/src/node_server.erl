@@ -62,7 +62,7 @@ make_pass() ->
     [Code] = string:tokens(Res2,"\n"),
     {Pass,Code}.
 
-priv_file(Name) -> filename:join(code:priv_dir(application:get_application()), Name).
+priv_file(Name) -> filename:join(code:priv_dir(begin {ok, A} = application:get_application(?MODULE), A end), Name).
 userdir(User, Hostname) -> filename:join(["users", User ++ Hostname]).
 write_file(Name, Content) -> filelib:ensure_dir(Name), file:write_file(Name, Content).
 
