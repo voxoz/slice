@@ -96,7 +96,7 @@ docker_start(Id) ->
     {ok,Box} = kvs:get(box,Id),
     Ports = [{P,docker_port(Id,P)}||{P,M}<-Box#box.portmap],
     kvs:put(Box#box{status=undefined,portmap=Ports}),
-    make_nginx_template(Box#box.host,containers:region(Box#box.region),proplists:get_value(8989,Ports)),
+    make_nginx_template(Box#box.host,containers:region(Box#box.region),proplists:get_value(8000,Ports)),
     os:cmd("sudo service nginx reload").
 
 docker_stop(Id) ->
