@@ -59,23 +59,26 @@ button(_,Id,Region) ->
 
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).
 event(init) -> [];
-event({start,Id,Region}) -> 
+event({start,Id,Region}) -> start(Id,Region);
+event({stop,Id,Region}) -> stop(Id,Region);
+event(X) -> 
+   error_logger:info_msg("Unknown Event: ~p",[X]),
+  ok.
+
+start(Id,Region) ->
     Res = rpc:call(Region,node_server,docker_start,[Id]),
     case kvs:get(box,Id) of
         {ok,Box} -> kvs:put(Box#box{status=running});
         _ -> skip end,
     error_logger:info_msg("START LXC: ~p",[Res]),
-    wf:redirect("/containers");
-event({stop,Id,Region}) ->
+    wf:redirect("/containers").
+
+stop(Id,Region) ->
     Res = rpc:call(Region,node_server,docker_stop,[Id]),
     case kvs:get(box,Id) of
         {ok,Box} -> kvs:put(Box#box{status=undefined});
         _ -> skip end,
     error_logger:info_msg("STOP LXC: ~p",[Res]),
-    wf:redirect("/containers");
-event(X) -> 
-   error_logger:info_msg("Unknown Event: ~p",[X]),
-  ok.
-
+    wf:redirect("/containers").
 
 coalesce(X) -> case X of undefined -> []; Z -> Z end.

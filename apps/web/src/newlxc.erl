@@ -16,6 +16,7 @@ body() -> index:header() ++ [
   ] ++ index:footer().
 
 create_lxc(User) -> [
+  wf:wire(wf:f("$('#~s').on('click', function(){$(this).html(\"<i class='icon-spinner icon-spin'></i> \"+$(this).html()); });", [createlxc])),
   #h3{body= <<"create container">>},
   #panel{class=["form-horizontal", "create-container"], body=[
     #panel{class=["control-group", large, tall], body=[
@@ -43,5 +44,7 @@ event(create_lxc) ->
     Res = rpc:call(Node#instance.name,node_server,create_box,[Hostname,(wf:user())#user.email,0,120*1024*1024,0,[22,8000,8989]]),
     error_logger:info_msg("Box: ~p",[Res]),
     ets:insert(boxes,Res),
-    wf:redirect("/containers").
+%    kvs:put(Res#box{status=running}),
+    containers:start(Res#box.id,Res#box.region).
+%    wf:redirect("/containers").
 
