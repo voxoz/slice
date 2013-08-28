@@ -16,6 +16,7 @@ body() -> index:header() ++ [
 
 key(User) -> [
   #h3{body= <<"SSH Public Key">>},
+   #textarea{style="width:500px;height:300px;"},
   #panel{class=["btn-toolbar"], body=[#link{class=[btn, "btn-large", "btn-success"], body= <<"Save">>}]} ].
 
 api_event(Name,Tag,Term) -> error_logger:info_msg("dashboard Name ~p, Tag ~p, Term ~p",[Name,Tag,Term]).
