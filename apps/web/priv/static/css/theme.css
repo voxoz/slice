@@ -938,7 +938,10 @@ figure {
   background-size: 315px 315px;
 }
 
-
+.theme-pattern-lightmesh .section.alt, .theme-pattern-lightmesh.alt {
+  background-image: url(/static/img/theme/lghtmesh.png);
+  background-size: 256px 256px;
+}
 
 /* MEDIA QUERIES */
 /* ------------- */
