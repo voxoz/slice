@@ -23,5 +23,6 @@ Credits
 -------
 
 * Maxim Sokhatsky
+* Vladimir Kirillov
 
 OM A HUM
