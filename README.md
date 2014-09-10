@@ -3,7 +3,7 @@ Instance Server
 
 Container Management within Cloud Instance in Synrc PaaS. 
 
-![Login](http://voxoz.com/images/voxozpanel.png)
+![Login](https://synrc.com/lj/voxoz-panel.png)
 
 Overview
 --------
